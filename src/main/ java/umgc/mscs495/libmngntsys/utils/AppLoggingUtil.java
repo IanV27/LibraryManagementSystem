@@ -29,6 +29,9 @@ public class AppLoggingUtil {
             //get current timestamp
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String LoggingTime = sdf.format(new Date());
+            String logLoc = getLogFileDir();
+            Path path = Paths.get(logLoc);
+            Files.createDirectories(path);            
             //get log file name
             String logginhFileNm = getLogFileName();
             //carete log file if does not exist or open the log file
