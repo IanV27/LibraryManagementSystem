@@ -2,11 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package libraryMangementSystem.view;
+package umgc.mscs495.libmngntsys.screens.librarian;
+
+import umgc.mscs495.libmngntsys.vo.Librarian;
+import umgc.mscs495.libmngntsys.DAO.LibrarianDAOImplement;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import libraryMangementSystem.model.Librarian;
-import librarymanagementsystem.controller.LibrarianDAOImplement;
+
 /**
  *
  * @author ramuk
