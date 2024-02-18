@@ -62,7 +62,45 @@ public class CredUtil {
         }
     }
 
-    
+    public String encrypt(final String strToEncrypt, final String secret) {
+      try {
+          setKey(secret);
+          Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+          cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+          return Base64.getEncoder()
+            .encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
+      } catch (Exception e) {
+          System.out.println("Error while encrypting: " + e.toString());
+      }
+      return null;
+  }
+
+    /**
+     * 
+     * @description Decrypt the credential information.
+     * @param strToDecrypt
+     * @param secret
+     * @return String - decrypted data
+     */
+    public String decrypt(final String strToDecrypt, final String secret) throws Exception
+    {
+        try 
+        {
+            //set secret key for decryption
+            setKey(secret);
+            //define transformation
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            //decode the encrypted credential
+            return new String(cipher.doFinal(Base64.getDecoder()
+                .decode(strToDecrypt)));
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e);
+        }
+    }
+
     /**
      * 
      * @description Write content to specified file.
