@@ -1,0 +1,170 @@
+create database LibraryDb;
+
+CREATE ROLE 'commonuser';
+GRANT SELECT ON librarydb.Books TO 'commonuser';
+
+CREATE ROLE 'memberuserRole';
+GRANT SELECT ON librarydb.* TO 'memberuserRole';
+
+CREATE ROLE 'librarianuserRole';
+GRANT SELECT ON librarydb.* TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Members TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Books TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Accounts TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.BookReservation TO 'librarianuserRole';
+
+CREATE ROLE 'supervisorRole';
+GRANT SELECT ON librarydb.* TO 'librarianuserRole';
+GRANT UPDATE ON librarydb.* TO 'librarianuserRole';
+GRANT INSERT ON librarydb.* TO 'librarianuserRole';
+GRANT DELETE ON librarydb.* TO 'librarianuserRole';
+
+CREATE USER 'user_member'@'localhost' IDENTIFIED BY 'pwd4Mem@db';
+GRANT 'memberuserRole' TO 'user_member'@'localhost';
+CREATE USER 'user_librar'@'localhost' IDENTIFIED BY 'pwd4Lib@db';
+GRANT 'librarianuserRole' TO 'user_librar'@'localhost';
+CREATE USER 'user_superv'@'localhost' IDENTIFIED BY 'pwd4Sup@db';
+GRANT 'supervisorRole' TO 'user_superv'@'localhost';
+
+CREATE TABLE Testtbl(
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+
+CREATE TABLE AccountTypes(
+    TypeID int NOT NULL,
+    TypeName varchar(25) NOT NULL,
+    PRIMARY KEY (TypeID),
+    INDEX FK_AccountTypesTypeID(TypeID)
+);
+INSERT INTO AccountTypes(TypeID, TypeName) values(3, 'DBA');
+INSERT INTO AccountTypes(TypeID, TypeName) values(2, 'Librarian');
+INSERT INTO AccountTypes(TypeID, TypeName) values(1, 'Member');
+INSERT INTO AccountTypes(TypeID, TypeName) values(0, 'Nonmember');
+
+CREATE TABLE Languages(
+    Language varchar(25) NOT NULL,
+    INDEX FK_LanguagesLanguage(Language)
+);
+INSERT INTO Languages(Language) values('English');
+INSERT INTO Languages(Language) values('French');
+INSERT INTO Languages(Language) values('German');
+INSERT INTO Languages(Language) values('Spanish');
+INSERT INTO Languages(Language) values('Italian');
+
+CREATE TABLE Subjects(
+    Subject varchar(25) NOT NULL,
+    INDEX FK_SubjectsSubject(Subject)
+);
+INSERT INTO Subjects(Subject) values('Hisotry');
+INSERT INTO Subjects(Subject) values('Literature');
+INSERT INTO Subjects(Subject) values('Science');
+INSERT INTO Subjects(Subject) values('Archaeology');
+INSERT INTO Subjects(Subject) values('Philosophy');
+INSERT INTO Subjects(Subject) values('Law');
+INSERT INTO Subjects(Subject) values('Fine arts');
+INSERT INTO Subjects(Subject) values('Religion');
+INSERT INTO Subjects(Subject) values('Computing');
+INSERT INTO Subjects(Subject) values('Mathematics');
+INSERT INTO Subjects(Subject) values('Psychology');
+INSERT INTO Subjects(Subject) values('Languages');
+INSERT INTO Subjects(Subject) values('Business');
+INSERT INTO Subjects(Subject) values('Anthropology');
+INSERT INTO Subjects(Subject) values('Communication');
+INSERT INTO Subjects(Subject) values('Economics');
+INSERT INTO Subjects(Subject) values('Education');
+INSERT INTO Subjects(Subject) values('Geography');
+INSERT INTO Subjects(Subject) values('Politics');
+INSERT INTO Subjects(Subject) values('Psychology');
+INSERT INTO Subjects(Subject) values('Sociology');
+INSERT INTO Subjects(Subject) values('Agriculture');
+INSERT INTO Subjects(Subject) values('Engineering');
+
+CREATE TABLE Formats(
+    BookFormat varchar(10) NOT NULL,
+    INDEX FK_FormatsBookFormat(BookFormat)
+);
+INSERT INTO Formats(BookFormat) values('Paperback');
+INSERT INTO Formats(BookFormat) values('Hardcover');
+INSERT INTO Formats(BookFormat) values('Audiobook');
+INSERT INTO Formats(BookFormat) values('Audio CD');
+INSERT INTO Formats(BookFormat) values('MP3 CD');
+INSERT INTO Formats(BookFormat) values('PDF');
+
+CREATE TABLE Members (
+    Email varchar(255) NOT NULL,
+    LastName varchar(50) NOT NULL,
+    FirstName varchar(50) NOT NULL,
+    ID varchar(10) NOT NULL,
+    Address varchar(50),
+    PRIMARY KEY (ID)
+);
+Alter table Members ADD CONSTRAINT FK_AccountsUsername FOREIGN KEY (Email) REFERENCES Accounts(Username) ON UPDATE CASCADE ON DELETE CASCADE;
+
+CREATE TABLE Librarians (
+    Email varchar(255) NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    Position varchar(15),
+    ID varchar(8) NOT NULL,
+    Address varchar(100),
+    PRIMARY KEY (ID)
+    --INDEX FK_LibrariansEmail(Email)
+);
+Alter table Librarians ADD CONSTRAINT FK_AccountsUsernameLib FOREIGN KEY (Email) REFERENCES Accounts(Username) ON UPDATE CASCADE ON DELETE CASCADE;
+
+CREATE TABLE Accounts (
+    ID varchar(7) NOT NULL,
+    Username varchar(255) NOT NULL,
+    Password varchar(255) NOT NULL,
+    AccountType int NOT NULL,
+    ActiveFlg   int NOT NULL DEFAULT 1,
+    PRIMARY KEY (ID),
+    INDEX FK_AccountsUsername(Username),
+    INDEX FK_AccountsUsernameLib(Username)
+);
+Alter table Accounts ADD CONSTRAINT FK_AccountTypesTypeID FOREIGN KEY (AccountType) REFERENCES AccountTypes(TypeID);
+
+
+CREATE TABLE Books (
+    ISBN varchar(15) NOT NULL,
+    Title varchar(255) NOT NULL,
+    Author varchar(150) NOT NULL,
+    Publisher varchar(100) NOT NULL,
+    Subject varchar(20) NOT NULL,
+    Language varchar(20) NOT NULL,
+    Format varchar(10),
+    PublishYear int,
+    Primary key (ISBN), 
+    INDEX FK_BooksISBN(ISBN)
+);
+Alter table Books ADD CONSTRAINT FK_SubjectsSubject FOREIGN KEY (Subject) REFERENCES Subjects(Subject) ON UPDATE CASCADE;
+Alter table Books ADD CONSTRAINT FK_LanguagesLanguage FOREIGN KEY (Language) REFERENCES Languages(Language) ON UPDATE CASCADE;
+Alter table Books ADD CONSTRAINT FK_FormatsBookFormat FOREIGN KEY (Format) REFERENCES Formats(BookFormat) ON UPDATE CASCADE;
+
+CREATE TABLE SingleBook (
+    ISBN varchar(15) NOT NULL,
+    Barcode varchar(15) NOT NULL,
+    Reserved int NOT NULL DEFAULT 0,
+    PurchaseDate date,
+    Price double,
+    Primary key (Barcode),
+    INDEX FK_SingleBookBarcode(Barcode)
+);
+Alter table SingleBook ADD CONSTRAINT FK_BooksISBN FOREIGN KEY (ISBN) REFERENCES Books(ISBN) ON UPDATE CASCADE ON DELETE CASCADE;
+
+CREATE TABLE BookReservation (
+    Barcode varchar(15) NOT NULL,
+    CreateDate date NOT NULL,
+    DueDate date NOT NULL,
+    ReturnDate date,
+    Fine double
+);
+Alter table BOOKRESERVATION ADD CONSTRAINT FK_SingleBookBarcode FOREIGN KEY (Barcode) REFERENCES SingleBook(Barcode) ON UPDATE CASCADE;
+
+
+
+
