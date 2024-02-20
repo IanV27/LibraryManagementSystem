@@ -20,9 +20,9 @@ public class LibMemberDatabaseConnection {
 			if(connection == null || connection != null && connection.isClosed()) {
 				CredUtil credUtil = new CredUtil();
 	            MysqlDataSource ds = new MysqlDataSource();
-				String commonUsername = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "commonusrnm"), 
+				String commonUsername = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "memberusrnm"), 
 						credUtil.getPropValue(credUtil.getConfigFileFullPath(), "loginkey"));
-				String commonUserpassword = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "commonusrpwd"), 
+				String commonUserpassword = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "memberusrpwd"), 
 						credUtil.getPropValue(credUtil.getConfigFileFullPath(), "loginkey"));
 	            ds.setUser(commonUsername);
 	            ds.setPassword(commonUserpassword);            
