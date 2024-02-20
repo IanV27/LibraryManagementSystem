@@ -1,3 +1,5 @@
+package umgc.mscs495.libmngntsys.screens.book;
+
 /*
  * Author: Kerly LaBranche
  * School: UMGC
@@ -99,8 +101,8 @@ public class AddBooksMenu extends JFrame {
     private void addBookToDatabase(String bookName, String author, String publisher, String isbn, String barcode,
                                    String subject, String language, String format) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library",
-                    "your_username", "your_password");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/library",
+                    "root", "");
 
             String sql = "INSERT INTO books (book_name, author, publisher, isbn, barcode, subject," +
                     " language, format) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
