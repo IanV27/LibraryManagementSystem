@@ -1,47 +1,8 @@
 -- Author: Jimie Wang
--- Date created: 01/20/2024
+-- Creation Date: 01/20/2024
+
 create database LibraryDb;
-
-CREATE ROLE 'commonuser';
-GRANT SELECT ON librarydb.Books TO 'commonuser';
-
-CREATE ROLE 'memberuserRole';
-GRANT SELECT ON librarydb.* TO 'memberuserRole';
-
-CREATE ROLE 'librarianuserRole';
-GRANT SELECT ON librarydb.* TO 'librarianuserRole';
-GRANT INSERT, UPDATE,DELETE ON librarydb.Members TO 'librarianuserRole';
-GRANT INSERT, UPDATE,DELETE ON librarydb.Books TO 'librarianuserRole';
-GRANT INSERT, UPDATE,DELETE ON librarydb.Accounts TO 'librarianuserRole';
-GRANT INSERT, UPDATE,DELETE ON librarydb.BookReservation TO 'librarianuserRole';
-
-CREATE ROLE 'supervisorRole';
-GRANT SELECT ON librarydb.* TO 'librarianuserRole';
-GRANT UPDATE ON librarydb.* TO 'librarianuserRole';
-GRANT INSERT ON librarydb.* TO 'librarianuserRole';
-GRANT DELETE ON librarydb.* TO 'librarianuserRole';
-
-CREATE USER 'user_member'@'localhost' IDENTIFIED BY 'pwd4Mem@db';
-GRANT 'memberuserRole' TO 'user_member'@'localhost';
-CREATE USER 'user_librar'@'localhost' IDENTIFIED BY 'pwd4Lib@db';
-GRANT 'librarianuserRole' TO 'user_librar'@'localhost';
-CREATE USER 'user_superv'@'localhost' IDENTIFIED BY 'pwd4Sup@db';
-GRANT 'supervisorRole' TO 'user_superv'@'localhost';
-
-GRANT SELECT ON librarydb.* TO 'user_member'@'localhost';
-
-GRANT SELECT ON librarydb.* TO 'user_librar'@'localhost';
-GRANT INSERT, UPDATE,DELETE ON librarydb.Members TO 'user_librar'@'localhost';
-GRANT INSERT, UPDATE,DELETE ON librarydb.Books TO 'user_librar'@'localhost';
-GRANT INSERT, UPDATE,DELETE ON librarydb.Accounts TO 'user_librar'@'localhost';
-GRANT INSERT, UPDATE,DELETE ON librarydb.BookReservation TO 'user_librar'@'localhost';
-
-GRANT SELECT ON librarydb.* TO 'user_superv'@'localhost';
-GRANT UPDATE ON librarydb.* TO 'user_superv'@'localhost';
-GRANT INSERT ON librarydb.* TO 'user_superv'@'localhost';
-GRANT DELETE ON librarydb.* TO 'user_superv'@'localhost';
-
-
+use LibraryDb;
 
 CREATE TABLE Testtbl(
     PersonID int,
@@ -182,6 +143,44 @@ CREATE TABLE BookReservation (
 );
 Alter table BOOKRESERVATION ADD CONSTRAINT FK_SingleBookBarcode FOREIGN KEY (Barcode) REFERENCES SingleBook(Barcode) ON UPDATE CASCADE;
 
+CREATE ROLE 'commonuser';
+GRANT SELECT ON librarydb.Books TO 'commonuser';
+
+CREATE ROLE 'memberuserRole';
+GRANT SELECT ON librarydb.* TO 'memberuserRole';
+
+CREATE ROLE 'librarianuserRole';
+GRANT SELECT ON librarydb.* TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Members TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Books TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Accounts TO 'librarianuserRole';
+GRANT INSERT, UPDATE,DELETE ON librarydb.BookReservation TO 'librarianuserRole';
+
+CREATE ROLE 'supervisorRole';
+GRANT SELECT ON librarydb.* TO 'librarianuserRole';
+GRANT UPDATE ON librarydb.* TO 'librarianuserRole';
+GRANT INSERT ON librarydb.* TO 'librarianuserRole';
+GRANT DELETE ON librarydb.* TO 'librarianuserRole';
+
+CREATE USER 'user_member'@'localhost' IDENTIFIED BY 'pwd4Mem@db';
+GRANT 'memberuserRole' TO 'user_member'@'localhost';
+CREATE USER 'user_librar'@'localhost' IDENTIFIED BY 'pwd4Lib@db';
+GRANT 'librarianuserRole' TO 'user_librar'@'localhost';
+CREATE USER 'user_superv'@'localhost' IDENTIFIED BY 'pwd4Sup@db';
+GRANT 'supervisorRole' TO 'user_superv'@'localhost';
+
+GRANT SELECT ON librarydb.* TO 'user_member'@'localhost';
+
+GRANT SELECT ON librarydb.* TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Members TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Books TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Accounts TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.BookReservation TO 'user_librar'@'localhost';
+
+GRANT SELECT ON librarydb.* TO 'user_superv'@'localhost';
+GRANT UPDATE ON librarydb.* TO 'user_superv'@'localhost';
+GRANT INSERT ON librarydb.* TO 'user_superv'@'localhost';
+GRANT DELETE ON librarydb.* TO 'user_superv'@'localhost';
 
 
 
