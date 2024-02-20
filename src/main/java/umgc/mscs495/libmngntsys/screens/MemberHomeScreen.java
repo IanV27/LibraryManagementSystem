@@ -34,8 +34,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import umgc.mscs495.libmngntsys.screens.book.DisplayBookScreens;
-import umgc.mscs495.libmngntsys.screens.member.DisplayMemberScreens;
+import umgc.mscs495.libmngntsys.screens.member.AddUserPage;
 import umgc.mscs495.libmngntsys.utils.AppUtils;
 import umgc.mscs495.libmngntsys.utils.LMSStatics;
 
@@ -65,6 +64,9 @@ public class MemberHomeScreen {
 		mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainFrame.setLayout(new GridLayout(3, 1));
 		mainFrame.setResizable(false);
+	    JLabel headerLabel = new JLabel("",JLabel.CENTER );
+	    JLabel statusLabel = new JLabel("",JLabel.CENTER);        
+	    statusLabel.setSize(350,100);
 	      
 	      mainFrame.addWindowListener(new WindowAdapter() {
 	         public void windowClosing(WindowEvent windowEvent){
@@ -88,7 +90,7 @@ public class MemberHomeScreen {
 		prepareGUI();
 	    //create a menu bar
 	    final JMenuBar menuBar = new JMenuBar();
-
+	    menuBar.setFont(new Font("Serif", Font.BOLD, 18));
 	    //create menus
 	    JMenu memberMenu = new JMenu("Members");
 	    memberMenu.setMnemonic(KeyEvent.VK_M);
@@ -210,20 +212,7 @@ public class MemberHomeScreen {
 	   }
 
 	   class MenuItemListener implements ActionListener {
-		      public void actionPerformed(ActionEvent e) {            
-		         if(e.getActionCommand().equals("Open")) {
-		        	 browseFiles();  // Let the constructor do the job		        	 
-		         }
-		         
-		         if(e.getActionCommand().equals("Save")) {
-		        	 if (JOptionPane.showConfirmDialog(drawPanel(), 
-		                     "Dialog", "Dialog title", 
-		                     JOptionPane.YES_NO_OPTION,
-		                     JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
-		              {
-		                //DO SOMETHING
-		              }        	 
-		         }
+		      public void actionPerformed(ActionEvent e) { 
 		         
 		         //Deleting member screen display
 		         if(e.getActionCommand().equals("DeleteMembers")) {
@@ -232,14 +221,14 @@ public class MemberHomeScreen {
 		         
 		         //Updating member information screen display
 		         if(e.getActionCommand().equals("EditMembers")) {
-		        	 DisplayMemberScreens  dispWin = new DisplayMemberScreens();
-		        	 dispWin.displayLoginConfirmWindow();
 		         }
 		         
 		         //Adding member screen display
 		         if(e.getActionCommand().equals("NewMembers")) {
-		        	 DisplayMemberScreens  dispWin = new DisplayMemberScreens();
-		        	 dispWin.displayAddMemberWindow();
+//		        	 DisplayMemberScreens  dispWin = new DisplayMemberScreens();
+//		        	 dispWin.displayAddMemberWindow();
+		        	 AddUserPage addMemScrn = new AddUserPage();
+		        	 addMemScrn.setVisible(true);
 		         }
 		         
 		         //Viewing member screen display
@@ -268,9 +257,6 @@ public class MemberHomeScreen {
 
 		         //Adding book screen display
 		         if(e.getActionCommand().equals("AddBooks")) {
-		        	 DisplayBookScreens dispWin = new DisplayBookScreens();
-		        	 dispWin.displayAddBookWindow();
-		        	 //swingMenuDemo.showMenuDemo();
 		         }
 		         
 		         //Deleting book screen display
