@@ -1,5 +1,5 @@
 
-package umgc.mscs495.libmngntsys.DAO;;
+package umgc.mscs495.libmngntsys.DAO;
 
 import java.awt.HeadlessException;
 import java.util.List;
