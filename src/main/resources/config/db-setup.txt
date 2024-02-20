@@ -1,3 +1,5 @@
+-- Author: Jimie Wang
+-- Date created: 01/20/2024
 create database LibraryDb;
 
 CREATE ROLE 'commonuser';
