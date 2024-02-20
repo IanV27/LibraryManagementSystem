@@ -13,6 +13,7 @@ public class Book {
 	private String publisher;
 	private String subject;
 	private String format;
+	private String language;
 	private int publishYear;
 	
 	/**
@@ -100,5 +101,17 @@ public class Book {
 		this.publishYear = publishYear;
 	}
 	
+	/**
+	 * @return the language
+	 */
+	public String getLanguage() {
+		return language;
+	}
+	/**
+	 * @param language the language to set
+	 */
+	public void setLanguage(String language) {
+		this.language = language;
+	}
 	
 }
