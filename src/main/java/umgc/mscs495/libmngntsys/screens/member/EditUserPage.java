@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
+package umgc.mscs495.libmngntsys.screens.member;
 import java.awt.*;
 import javax.swing.*;
 

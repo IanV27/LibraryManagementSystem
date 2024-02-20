@@ -1,3 +1,5 @@
+package umgc.mscs495.libmngntsys.screens.member;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

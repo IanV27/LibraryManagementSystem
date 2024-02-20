@@ -1,3 +1,4 @@
+package umgc.mscs495.libmngntsys.screens.member;
 public class Validation {
     public static void validateInput(String firstName, String lastName, String address,
                                      String email, String password) throws UserInputValidationException {

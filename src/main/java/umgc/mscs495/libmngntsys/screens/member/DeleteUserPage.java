@@ -1,3 +1,4 @@
+package umgc.mscs495.libmngntsys.screens.member;
 /**
  * @author tezus
  */

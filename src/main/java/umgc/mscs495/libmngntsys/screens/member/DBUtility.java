@@ -1,3 +1,5 @@
+package umgc.mscs495.libmngntsys.screens.member;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
