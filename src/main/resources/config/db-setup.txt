@@ -26,6 +26,21 @@ GRANT 'librarianuserRole' TO 'user_librar'@'localhost';
 CREATE USER 'user_superv'@'localhost' IDENTIFIED BY 'pwd4Sup@db';
 GRANT 'supervisorRole' TO 'user_superv'@'localhost';
 
+GRANT SELECT ON librarydb.* TO 'user_member'@'localhost';
+
+GRANT SELECT ON librarydb.* TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Members TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Books TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.Accounts TO 'user_librar'@'localhost';
+GRANT INSERT, UPDATE,DELETE ON librarydb.BookReservation TO 'user_librar'@'localhost';
+
+GRANT SELECT ON librarydb.* TO 'user_superv'@'localhost';
+GRANT UPDATE ON librarydb.* TO 'user_superv'@'localhost';
+GRANT INSERT ON librarydb.* TO 'user_superv'@'localhost';
+GRANT DELETE ON librarydb.* TO 'user_superv'@'localhost';
+
+
+
 CREATE TABLE Testtbl(
     PersonID int,
     LastName varchar(255),
