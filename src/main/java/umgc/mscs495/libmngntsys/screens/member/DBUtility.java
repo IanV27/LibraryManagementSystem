@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * A utility class for interacting with a database and retrieving user data.
  *
- * @author tezus
+ * @author tyra
  */
 public class DBUtility {
     private static final String DB_USER = "root";
