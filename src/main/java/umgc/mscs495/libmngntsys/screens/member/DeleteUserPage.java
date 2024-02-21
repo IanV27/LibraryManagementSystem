@@ -1,6 +1,6 @@
 package umgc.mscs495.libmngntsys.screens.member;
 /**
- * @author tezus
+ * @author tyra
  */
 
 import java.awt.*;
