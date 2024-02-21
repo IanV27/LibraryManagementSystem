@@ -5,7 +5,7 @@
 package umgc.mscs495.libmngntsys.screens.member;
 
 /**
- * @author tezus
+ * @author tyra
  */
 public class LibraryManagementSystemUsers {
 
