@@ -7,7 +7,7 @@ import java.util.Random;
 import javax.swing.*;
 
 /**
- * @author tezus
+ * @author tyra
  */
 public class AddUserPage extends JFrame {
     private final JTextField firstNameField;
