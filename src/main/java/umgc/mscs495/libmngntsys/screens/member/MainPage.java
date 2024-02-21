@@ -4,7 +4,7 @@
  */
 
 /**
- * @author tezus
+ * @author tyra
  */
 package umgc.mscs495.libmngntsys.screens.member;
 
