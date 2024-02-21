@@ -2,7 +2,7 @@ package umgc.mscs495.libmngntsys.screens.member;
 import java.util.Objects;
 
 /**
- * @author tezus
+ * @author tyra
  */
 public class User {
     private String libraryNumber;
