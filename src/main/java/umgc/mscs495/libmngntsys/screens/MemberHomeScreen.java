@@ -34,7 +34,18 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import umgc.mscs495.libmngntsys.screens.book.AddBooksMenu;
+import umgc.mscs495.libmngntsys.screens.book.Book1GUI;
+import umgc.mscs495.libmngntsys.screens.book.Book1Reserve;
+import umgc.mscs495.libmngntsys.screens.book.DeleteBookMenu;
+import umgc.mscs495.libmngntsys.screens.librarian.AddForm;
+import umgc.mscs495.libmngntsys.screens.librarian.EditLibrarian;
+import umgc.mscs495.libmngntsys.screens.librarian.LibraryHomePage;
+import umgc.mscs495.libmngntsys.screens.librarian.ViewLibrarian;
 import umgc.mscs495.libmngntsys.screens.member.AddUserPage;
+import umgc.mscs495.libmngntsys.screens.member.DeleteUserPage;
+import umgc.mscs495.libmngntsys.screens.member.EditUserPage;
+import umgc.mscs495.libmngntsys.screens.member.ViewUserPage;
 import umgc.mscs495.libmngntsys.utils.AppUtils;
 import umgc.mscs495.libmngntsys.utils.LMSStatics;
 
@@ -100,7 +111,10 @@ public class MemberHomeScreen {
 	    bookMenu.setMnemonic(KeyEvent.VK_B);
 	    final JMenu logoutMenu = new JMenu("Log Out");
 	    logoutMenu.setMnemonic(KeyEvent.VK_O);
-	     
+	    JMenuItem logoutItem = new JMenuItem("Log Out");
+	    logoutItem.setActionCommand("Logout");
+	    logoutMenu.add(logoutItem);
+	    
 	    //create menu items
 	    JMenuItem newMemberMenuItem = new JMenuItem("Add Members");
 	    newMemberMenuItem .setMnemonic(KeyEvent.VK_N);
@@ -157,6 +171,7 @@ public class MemberHomeScreen {
 	    delBookMenuItem.addActionListener(menuItemListener);
 	    searchBookMenuItem.addActionListener(menuItemListener);
 	    reserveBookMenuItem.addActionListener(menuItemListener);
+	    logoutItem.addActionListener(menuItemListener);
 
 	    final JCheckBoxMenuItem showWindowMenu = new JCheckBoxMenuItem("Show About", true);
 	    showWindowMenu.addItemListener(new ItemListener() {
@@ -216,64 +231,92 @@ public class MemberHomeScreen {
 		         
 		         //Deleting member screen display
 		         if(e.getActionCommand().equals("DeleteMembers")) {
-		        	 
+		        	 DeleteUserPage delMemScrn = new DeleteUserPage();
+		        	 delMemScrn.setLocationRelativeTo(null);
+		        	 delMemScrn.setVisible(true);
 		         }
 		         
 		         //Updating member information screen display
 		         if(e.getActionCommand().equals("EditMembers")) {
+		        	 EditUserPage editMemScrn = new EditUserPage();
+		        	 editMemScrn.setLocationRelativeTo(null);
+		        	 editMemScrn.setVisible(true);
 		         }
 		         
 		         //Adding member screen display
 		         if(e.getActionCommand().equals("NewMembers")) {
-//		        	 DisplayMemberScreens  dispWin = new DisplayMemberScreens();
-//		        	 dispWin.displayAddMemberWindow();
 		        	 AddUserPage addMemScrn = new AddUserPage();
+		        	 addMemScrn.setLocationRelativeTo(null);
 		        	 addMemScrn.setVisible(true);
 		         }
 		         
 		         //Viewing member screen display
 		         if(e.getActionCommand().equals("ViewMembers")) {
+		        	 ViewUserPage viewMemScrn = new ViewUserPage();
+		        	 viewMemScrn.setLocationRelativeTo(null);
+		        	 viewMemScrn.setVisible(true);
 		         }
 		         
 		         //Adding librarian screen display
 		         if(e.getActionCommand().equals("AddLibrarians")) {
-		        	 
+		        	 AddForm addLib = new AddForm();
+		        	 addLib.setLocationRelativeTo(null);
+		        	 addLib.setVisible(true);
 		         }
 
 		         //Editing librarian screen display
 		         if(e.getActionCommand().equals("EditLibrarians")) {
-		        	 
+		        	 EditLibrarian editLib = new EditLibrarian();
+		        	 editLib.setLocationRelativeTo(null);
+		        	 editLib.setVisible(true);
 		         }
 
 		         //Deleting librarian screen display
 		         if(e.getActionCommand().equals("DeleteLibrarians")) {
-		        	 
+		        	 LibraryHomePage libHomeScren = new LibraryHomePage();
+		        	 libHomeScren.setLocationRelativeTo(null);
+		        	 libHomeScren.setVisible(true);
 		         }
 
 		         //Viewing librarian screen display
 		         if(e.getActionCommand().equals("ViewLibrarians")) {
-		        	 
+		        	 ViewLibrarian viewLib = new ViewLibrarian();
+		        	 viewLib.setLocationRelativeTo(null);
+		        	 viewLib.setVisible(true);
 		         }
 
 		         //Adding book screen display
 		         if(e.getActionCommand().equals("AddBooks")) {
+		        	 AddBooksMenu addBookScren = new AddBooksMenu();
+		        	 addBookScren.setLocationRelativeTo(null);
+		        	 addBookScren.setVisible(true);
 		         }
 		         
 		         //Deleting book screen display
 		         if(e.getActionCommand().equals("DeleteBooks")) {
-		        	 
+		        	 DeleteBookMenu delBookScren = new DeleteBookMenu();
+		        	 delBookScren.setLocationRelativeTo(null);
+		        	 delBookScren.setVisible(true);
 		         }
 
 		         //Searching book screen display
 		         if(e.getActionCommand().equals("SearchBooks")) {
-		        	 
+		        	 Book1GUI searchBook = new Book1GUI();
+		        	 searchBook.setLocationRelativeTo(null);
+		        	 searchBook.setVisible(true);
 		         }
 		         
 		         //Reserving book screen display
 		         if(e.getActionCommand().equals("ReserveBooks")) {
-		        	 
+		        	 Book1Reserve bookReserve = new Book1Reserve();
+		        	 bookReserve.setLocationRelativeTo(null);
+		        	 bookReserve.setVisible(true);
 		         }
 		         
+		         //Log out
+		         if(e.getActionCommand().equals("Logout")) {
+		        	 mainFrame.dispose();
+		         }
 		      }    
 		   }
 	   
