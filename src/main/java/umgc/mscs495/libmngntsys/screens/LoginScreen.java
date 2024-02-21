@@ -24,8 +24,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 
+import umgc.mscs495.libmngntsys.DAO.UsersAccountsOperations;
+import umgc.mscs495.libmngntsys.utils.AppLoggingUtil;
 import umgc.mscs495.libmngntsys.utils.AppUtils;
 import umgc.mscs495.libmngntsys.utils.LMSStatics;
+import umgc.mscs495.libmngntsys.vo.Account;
 import umgc.mscs495.libmngntsys.vo.UserRole;
 
 /**
@@ -37,6 +40,9 @@ import umgc.mscs495.libmngntsys.vo.UserRole;
 public class LoginScreen extends JPanel {
 	private JFrame parentFrame;
 	private final Font loginFont = new Font("Serif", Font.ITALIC, 14);
+	private int trialCount = 0;
+	String loginErrMsg = "";
+	
 	public LoginScreen(JFrame nonMemberFrame) {
 		this.parentFrame= nonMemberFrame; 
         setLayout(new GridBagLayout());
@@ -47,18 +53,20 @@ public class LoginScreen extends JPanel {
 	 
 	 public JPanel drawPanel() {
 		AppUtils appUtil = new AppUtils();
+		AppLoggingUtil logging = new AppLoggingUtil();
+		UsersAccountsOperations usrAccntOpts = new UsersAccountsOperations();
         JLabel msgLbl = new JLabel("", SwingConstants.CENTER);
         JPanel loginPanel = new JPanel(new GridLayout(8, 1));
         loginPanel.setBackground(Color.CYAN);
         loginPanel.setPreferredSize(new Dimension(400, 200));
         loginPanel.setBorder(BorderFactory.createRaisedBevelBorder());
-		//add log in label title
+        //add login screen title
         JPanel titlePanel = new JPanel(new FlowLayout());
         JLabel titleLbl = new JLabel("Log In");
         titleLbl.setFont(new Font("Verdana", Font.PLAIN, 16));
         titlePanel.add(titleLbl);
 
-		//add user name label and input field
+        //add username input section
         loginPanel.add(titlePanel);
         JPanel usernamePanel = new JPanel(new FlowLayout());
         usernamePanel.setPreferredSize(new Dimension(400, 30));
@@ -70,7 +78,7 @@ public class LoginScreen extends JPanel {
         usernamePanel.add(usernameField);
         loginPanel.add(usernamePanel);
         
-		//add password label and input field
+        //add password input section
         JPanel passwordPanel = new JPanel(new FlowLayout());
         JLabel pwdLbl = new JLabel(" Password: ");
         pwdLbl.setFont(loginFont);
@@ -80,7 +88,6 @@ public class LoginScreen extends JPanel {
         passwordPanel.add(pwdField);
         loginPanel.add(passwordPanel);
        
-		//add login role label and input field
         JPanel rolePanel = new JPanel(new FlowLayout());
         JLabel roleLbl = new JLabel("Role: ");
         roleLbl.setFont(loginFont);
@@ -98,7 +105,7 @@ public class LoginScreen extends JPanel {
         loginPanel.add(rolePanel);
         loginPanel.add(new JPanel());
        
-		//add button 
+        //add button section
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
         JButton loginBtn = new JButton("Log In");
         loginBtn.setFont(loginFont);
@@ -119,7 +126,46 @@ public class LoginScreen extends JPanel {
 				String username = usernameField.getText();
 				String password = String.valueOf(pwdField.getPassword());
 				System.out.println(username +" " + password + roleCode);
-				
+				//input username and password validation
+				if(username == null || username != null && username.trim().isEmpty()) {
+					loginErrMsg = "Please input your username.";
+				} else if(password == null || password != null && password.trim().isEmpty()) {
+					loginErrMsg = "Please input your password.";
+				} else {
+					username = username.trim();
+					//authenticate input user's account
+					Account loginAccount = usrAccntOpts.getUserAccount(username);
+					if(loginAccount != null) {
+						//check if the account has been locked
+						if(loginAccount.getActiveFlg() == LMSStatics.INACTIVE_ACCOUNT) {
+							loginErrMsg = "Your account has been locked please contact with Librarian.";
+						} else {
+							//validate the input password
+							if(loginAccount.getPassword().equals(password)) {
+								logging.log(username + " logged in successfully!");
+								parentFrame.dispose();
+								MemberHomeScreen memberScreen = new MemberHomeScreen();
+								memberScreen.showMenuScreen();
+							} else {
+								//max trial count check
+								if(trialCount > LMSStatics.MAX_TRIAL_COUNT) {
+									//lock user's account when exceed max trian count
+									usrAccntOpts.disableUserAccount(username);
+									logging.log(username + " account is locked up!");
+								} else {
+									trialCount += 1;
+									logging.log(username + " logged in failure!");
+								}
+								loginErrMsg = "Input username or password not correct, please try a gain.";
+							}
+						}
+					} else {
+						loginErrMsg = "Input username or password not correct.";
+					}
+					
+				}
+				//display error message
+				msgLbl.setText(loginErrMsg);
 				if(roleCode == LMSStatics.MEMBER_ROLE_CODE) {
 					
 				} else if(roleCode == LMSStatics.LIBRARIAN_ROLE_CODE) {
@@ -127,13 +173,11 @@ public class LoginScreen extends JPanel {
 				} else if(roleCode == LMSStatics.DBA_ROLE_CODE) {
 					
 				} else {
-					msgLbl.setText("Invalid login role selected");
+					
 					System.out.println("Invalid login role selected");
 				}
-				
 			}
 		}); 
-		//add actionListener for reset button
         resetBtn.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
@@ -187,5 +231,4 @@ public class LoginScreen extends JPanel {
 	            return this;
 	        }
 	    }
-	 
 }
