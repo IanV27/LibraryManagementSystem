@@ -12,7 +12,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author ramuk
+ * @author ramuk uploaded this file through Netbeans
+ 
  */
 public class LibraryDb {
     static Connection con;
