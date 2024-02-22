@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import umgc.mscs495.libmngntsys.screens.MemberHomeScreen;
-import umgc.mscs495.libmngntsys.screens.NonmemberHomeScreen;
+//import umgc.mscs495.libmngntsys.screens.NonmemberHomeScreen;
 
 public class Test {
 
