@@ -34,11 +34,11 @@ public class Test {
 //			NonmemberHomeScreen nonmemscrn = new NonmemberHomeScreen(userFrame);
 			MemberHomeScreen nonmemscrn = new MemberHomeScreen();
 			nonmemscrn.showMenuScreen();
-		String decrykey = crdutl.getPropValue(crdutl.getConfigFileFullPath(), "loginkey");
-		String enppwd = crdutl.encrypt("dsfwe@sfs", decrykey);
-		String pwd = crdutl.decrypt(enppwd, decrykey);
-		System.out.println(enppwd);
-		System.out.println(pwd);
+//		String decrykey = crdutl.getPropValue(crdutl.getConfigFileFullPath(), "loginkey");
+//		String enppwd = crdutl.encrypt("dsfwe@sfs", decrykey);
+//		String pwd = crdutl.decrypt(enppwd, decrykey);
+//		System.out.println(enppwd);
+//		System.out.println(pwd);
 		} catch(Exception e) {
 			
 		}
