@@ -288,15 +288,15 @@ public class MemberHomeScreen {
 		         //Adding book screen display
 		         if(e.getActionCommand().equals("AddBooks")) {
 		        	 AddBooksMenu addBookScren = new AddBooksMenu();
-		        	 addBookScren.setLocationRelativeTo(null);
-		        	 addBookScren.setVisible(true);
+		        	// addBookScren.setLocationRelativeTo(null);
+		        	// addBookScren.setVisible(true);
 		         }
 		         
 		         //Deleting book screen display
 		         if(e.getActionCommand().equals("DeleteBooks")) {
 		        	 DeleteBookMenu delBookScren = new DeleteBookMenu();
-		        	 delBookScren.setLocationRelativeTo(null);
-		        	 delBookScren.setVisible(true);
+		        	// delBookScren.setLocationRelativeTo(null);
+		        	// delBookScren.setVisible(true);
 		         }
 
 		         //Searching book screen display

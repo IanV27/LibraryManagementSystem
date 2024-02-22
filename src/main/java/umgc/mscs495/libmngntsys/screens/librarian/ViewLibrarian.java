@@ -29,7 +29,7 @@ public class ViewLibrarian extends javax.swing.JFrame {
         DefaultTableModel dft = (DefaultTableModel) librariansTbl.getModel();
         dft.setRowCount(0);
         for (Librarian lbr: librarianList){
-            int sid = lbr.getId();
+            String sid = lbr.getId();
             String lbrFirstName = lbr.getFirstName();
             String lbrLastName = lbr.getLastName();
             String lbrPosition = lbr.getPosition();
@@ -167,7 +167,7 @@ public class ViewLibrarian extends javax.swing.JFrame {
          if(row != -1){
              LibrarianDAOImplement liberImple = new LibrarianDAOImplement();
              Librarian librarian = new Librarian();
-             librarian.setId(Integer.parseInt(dft.getValueAt(row, 0).toString()));
+             librarian.setId(dft.getValueAt(row, 0).toString());
              librarian.setFirstName(dft.getValueAt(row,1).toString());
              librarian.setLastName(dft.getValueAt(row,2).toString());
              librarian.setPosition(dft.getValueAt(row,3).toString());

@@ -25,8 +25,8 @@ public class Test {
 		// TODO Auto-generated method stub
 		CredUtil crdutl = new CredUtil();
 		try {
-			AppUtils appUtil = new AppUtils();
-			appUtil.getBookLanguages();
+			//AppUtils appUtil = new AppUtils();
+			//appUtil.getBookLanguages();
 			//Test tst = new Test();
 //			PicFrame userFrame = new PicFrame();
 			JFrame userFrame = new JFrame();

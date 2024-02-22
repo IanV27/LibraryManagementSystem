@@ -233,8 +233,8 @@ public class EditLibrarian extends javax.swing.JFrame {
     public void LoadEditPage(){
         LibrarianDAOImplement liberImple = new LibrarianDAOImplement();
         
-        Librarian librarian = liberImple.get(1); ///pass id here TODO
-        txtId.setText(Integer.toString(librarian.getId()));
+        Librarian librarian = liberImple.get("adfas"); ///pass id here TODO
+        txtId.setText(librarian.getId());
         txtFirstName.setText(librarian.getFirstName());
         txtLastName.setText(librarian.getLastName());
         txtPosition.setText(librarian.getPosition());
@@ -247,7 +247,7 @@ public class EditLibrarian extends javax.swing.JFrame {
         // TODO add your handling code here:
        
         Librarian librarian = new Librarian();
-        int id = Integer.parseInt(txtId.getText());
+        String id = txtId.getText();
         String firstName = txtFirstName.getText();
         String lastName = txtLastName.getText();
         String position = txtPosition.getText();
