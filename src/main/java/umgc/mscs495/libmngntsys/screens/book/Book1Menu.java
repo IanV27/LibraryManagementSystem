@@ -53,8 +53,8 @@ public class Book1Menu extends JFrame {
     }
 
     private void openSearchBooksMenu() {
-        Book1SearchResults book1SearchResults = new Book1SearchResults();
-        book1SearchResults.setVisible(true);
+        Book1GUI book1GUI = new Book1GUI();
+        book1GUI.setVisible(true);
     }
 
     private void openReserveBooksMenu() {
