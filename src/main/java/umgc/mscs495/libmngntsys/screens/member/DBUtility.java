@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class DBUtility {
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "1369805742";
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/LibraryDB";
+    private static final String URL = "jdbc:mysql://localhost:3306/LibraryDB";
    
 
     /**
