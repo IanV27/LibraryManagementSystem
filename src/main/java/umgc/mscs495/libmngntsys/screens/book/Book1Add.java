@@ -4,9 +4,14 @@ package umgc.mscs495.libmngntsys.screens.book;
  * Author: Kerly LaBranche
  * School: UMGC
  * Course: CMSC 495
- * Date: 20 February 2024
+ * Date: 23 February 2024
  * Purpose: Add books to menu
  * */
+
+import umgc.mscs495.libmngntsys.utils.AppUtils;
+import umgc.mscs495.libmngntsys.utils.JTextFieldCharLimit;
+import umgc.mscs495.libmngntsys.utils.LibLibrarianDatabaseConnection;
+import umgc.mscs495.libmngntsys.utils.ValidationUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +19,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 
 public class Book1Add extends JFrame {
     private final JTextField bookNameField;
@@ -21,45 +31,125 @@ public class Book1Add extends JFrame {
     private final JTextField publisherField;
     private final JTextField isbnField;
     private final JTextField barcodeField;
-    private final JTextField subjectField;
-    private final JTextField languageField;
-    private final JTextField formatField;
+    private final JComboBox subjectCombos;
+    private final JComboBox languageCombos;
+    private final JComboBox formatCombos;
+    private final JComboBox publishYrCombos;
 
+    private static final int ISBN_LENGTH = 11;
+    private static final int BARCODE_LENGTH = 10;
     public Book1Add() {
         setTitle("Add Books");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setAlwaysOnTop(true);
+
+        AppUtils appUtil = new AppUtils();
+        List<String> bookSubjectsLst = appUtil.getBookSubjects();
+        List<String> bookLanguagesLst = appUtil.getBookLanguages();
+        List<String> bookFormatsLst = appUtil.getBookFormats();
+
+        Font addBookFont = new Font("Serif", Font.ITALIC, 15);
+        Font inputFilesFont = new Font("Serif", Font.ITALIC, 12);
 
         bookNameField = new JTextField(15);
         authorField = new JTextField(15);
         publisherField = new JTextField(15);
         isbnField = new JTextField(15);
+        isbnField.setDocument(new JTextFieldCharLimit(11));
         barcodeField = new JTextField(15);
-        subjectField = new JTextField(15);
-        languageField = new JTextField(15);
-        formatField = new JTextField(15);
+        barcodeField.setDocument(new JTextFieldCharLimit(10));
+
 
         JButton addButton = new JButton("Enter");
         addButton.addActionListener(e -> addBook());
 
-        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5)); // 0 rows, 2 columns
-        panel.add(new JLabel("Book Name:"));
+        JButton resetButton = new JButton("Reset");
+        resetButton.addActionListener(e -> clearFields());
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(10, 2));
+
+        //add book name section
+        JLabel bookNameLbl = new JLabel("   Book Name:");
+        bookNameLbl.setFont(addBookFont);
+        panel.add(bookNameLbl);
+        bookNameField.setFont(inputFilesFont);
         panel.add(bookNameField);
-        panel.add(new JLabel("Author:"));
+
+        //add author section
+        JLabel authorLbl = new JLabel("   Author:");
+        authorLbl.setFont(addBookFont);
+        panel.add(authorLbl);
+        authorField.setFont(inputFilesFont);
         panel.add(authorField);
-        panel.add(new JLabel("Publisher:"));
+
+        //add publisher section
+        JLabel publisherLbl = new JLabel("   Publisher:");
+        publisherLbl.setFont(addBookFont);
+        panel.add(publisherLbl);
+        publisherField.setFont(inputFilesFont);
         panel.add(publisherField);
-        panel.add(new JLabel("ISBN:"));
+
+        //add isbn section
+        JLabel isbnLbl = new JLabel("   ISBN:");
+        isbnLbl.setFont(addBookFont);
+        panel.add(isbnLbl);
+        isbnField.setFont(inputFilesFont);
         panel.add(isbnField);
-        panel.add(new JLabel("Barcode:"));
+
+        //add barcode section
+        JLabel barcodeLbl = new JLabel("   Barcode:");
+        barcodeLbl.setFont(addBookFont);
+        panel.add(barcodeLbl);
+        barcodeField.setFont(inputFilesFont);
+
+        //add subject section
         panel.add(barcodeField);
-        panel.add(new JLabel("Subject:"));
-        panel.add(subjectField);
-        panel.add(new JLabel("Language:"));
-        panel.add(languageField);
-        panel.add(new JLabel("Format:"));
-        panel.add(formatField);
+        JLabel subjectLbl = new JLabel("   Subject:");
+        subjectLbl.setFont(addBookFont);
+        panel.add(subjectLbl);
+        String[] subjectsArr = bookSubjectsLst.toArray(String[]::new);
+        subjectCombos = new JComboBox(subjectsArr);
+        subjectCombos.setFont(addBookFont);
+        panel.add(subjectCombos);
+
+        //add language section
+        JLabel langLbl = new JLabel("   Language:");
+        langLbl.setFont(addBookFont);
+        panel.add(langLbl);
+        String[] languagesArr = bookLanguagesLst.toArray(String[]::new);
+        languageCombos = new JComboBox(languagesArr);
+        languageCombos.setFont(addBookFont);
+        panel.add(languageCombos);
+
+        //add book format section
+        JLabel formatLbl = new JLabel("   Format:");
+        formatLbl.setFont(addBookFont);
+        panel.add(formatLbl);
+        String[] formatsArr = bookFormatsLst.toArray(String[]::new);
+        formatCombos = new JComboBox(formatsArr);
+        formatCombos.setFont(addBookFont);
+        panel.add(formatCombos);
+
+        //add publish year section
+        JLabel publishYrLbl = new JLabel("   Publisher Year: ");
+        publishYrLbl.setFont(addBookFont);
+        panel.add(publishYrLbl);
+        Calendar now = Calendar.getInstance(Locale.US);
+        String[] publishYearArr = new String[now.get(Calendar.YEAR) - 1919];
+        publishYearArr[0] = "Select Year";
+        for(int year=now.get(Calendar.YEAR); year > 1920; year--) {
+            publishYearArr[now.get(Calendar.YEAR) - year + 1] ="" + year;
+        }
+        publishYrCombos = new JComboBox(publishYearArr);
+        publishYrCombos.setFont(addBookFont);
+        panel.add(publishYrCombos);
+        addButton.setFont(addBookFont);
+        resetButton.setFont(addBookFont);
         panel.add(addButton);
+        panel.add(resetButton);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(addButton);
@@ -68,19 +158,29 @@ public class Book1Add extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    //Adding book information into db
     private void addBook() {
         String bookName = bookNameField.getText();
         String author = authorField.getText();
         String publisher = publisherField.getText();
         String isbn = isbnField.getText();
         String barcode = barcodeField.getText();
-        String subject = subjectField.getText();
-        String language = languageField.getText();
-        String format = formatField.getText();
+        String subject = (String) subjectCombos.getSelectedItem();
+        String language = (String) languageCombos.getSelectedItem();
+        String format = (String) formatCombos.getSelectedItem();
+        String publishYear = (String) publishYrCombos.getSelectedItem();
+        ValidationUtil valUtil = new ValidationUtil();
+        int publishYearInt = 0;
+        if(valUtil.isDigits(publishYear)) {
+            assert publishYear != null;
+            publishYearInt = Integer.parseInt(publishYear);
+        }
+        System.out.println(publishYearInt);
 
         // Validate all fields
         if (bookName.isEmpty() || author.isEmpty() || publisher.isEmpty() || isbn.isEmpty() || barcode.isEmpty() ||
-                subject.isEmpty() || language.isEmpty() || format.isEmpty()) {
+                Objects.requireNonNull(subject).isEmpty() || Objects.requireNonNull(language).isEmpty() ||
+                Objects.requireNonNull(format).isEmpty() || Objects.requireNonNull(publishYear).isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.");
             return;
         }
@@ -97,30 +197,32 @@ public class Book1Add extends JFrame {
         }
 
         // Add book to the database
-        addBookToDatabase(bookName, author, publisher, isbn, barcode, subject, language, format);
+        addBookToDatabase(bookName, author, publisher, isbn, barcode, subject, language, format, publishYearInt);
 
         // Clear fields after adding book
         clearFields();
     }
 
     private void addBookToDatabase(String bookName, String author, String publisher, String isbn, String barcode,
-                                   String subject, String language, String format) {
+                                   String subject, String language, String format, int pubYear) {
+        Connection connection = null;
+        PreparedStatement statement = null;
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/library",
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/library",
                     "root", "");
+                    connection = LibLibrarianDatabaseConnection.getConnection();
+            String sql = "INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language," +
+                    "format, PublishYear) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            String sql = "INSERT INTO books (book_name, author, publisher, isbn, barcode, subject," +
-                    " language, format) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-            PreparedStatement statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(sql);
             statement.setString(1, bookName);
-            statement.setString(2, author);
-            statement.setString(3, publisher);
-            statement.setString(4, isbn);
-            statement.setString(5, barcode);
-            statement.setString(6, subject);
-            statement.setString(7, language);
-            statement.setString(8, format);
+            statement.setString(2, isbn);
+            statement.setString(3, author);
+            statement.setString(4, publisher);
+            statement.setString(5, subject);
+            statement.setString(6, language);
+            statement.setString(7, format);
+            statement.setInt(8, pubYear);
 
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
@@ -129,20 +231,46 @@ public class Book1Add extends JFrame {
                 JOptionPane.showMessageDialog(this, "Failed to add book.");
             }
 
+            sql = "insert into singlebook(isbn, barcode,reserved) values(?, ?, 0)";
+
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, isbn);
+            statement.setString(2, barcode);
+
+            rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(this, "Single Book added successfully.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to add Single book.");
+            }
+
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error adding book to the database.");
+        } finally {
+            try {
+                if(statement != null) {
+                    statement.close();
+                }
+                if(connection != null) {
+                    connection.close();
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    //validate ISBN
     private boolean validateISBN(String isbn) {
         // Trim whitespace and validate ISBN format
-        return isbn.trim().matches("\\d{11}");
+        return isbn.trim().matches("\\d{" + ISBN_LENGTH + "}");
     }
 
     private boolean validateBarcode(String barcode) {
         // Validate barcode format
-        return barcode.matches("\\d{10}");
+        return barcode.matches("\\d{" + BARCODE_LENGTH + "}");
     }
 
     private void clearFields() {
@@ -151,12 +279,13 @@ public class Book1Add extends JFrame {
         publisherField.setText("");
         isbnField.setText("");
         barcodeField.setText("");
-        subjectField.setText("");
-        languageField.setText("");
-        formatField.setText("");
+        subjectCombos.setSelectedIndex(0);
+        languageCombos.setSelectedIndex(0);
+        formatCombos.setSelectedIndex(0);
+        publishYrCombos.setSelectedIndex(0);
     }
 
     public static void main(String[] args) {
-       new Book1Add().setVisible(true);
+        new Book1Add().setVisible(true);
     }
 }
