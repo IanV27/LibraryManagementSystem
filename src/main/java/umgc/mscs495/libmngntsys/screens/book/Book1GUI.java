@@ -24,12 +24,12 @@ public class Book1GUI extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        bookNameField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        authorField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        btnOpenSearchResults = new javax.swing.JToggleButton();
+        publisherField = new javax.swing.JTextField();
+        searchBook = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Search Book");
@@ -40,13 +40,10 @@ public class Book1GUI extends javax.swing.JFrame {
 
         jLabel3.setText("Publisher:");
 
-        btnOpenSearchResults.setText("ENTER");
-        btnOpenSearchResults.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOpenSearchResultsActionPerformed(evt);
-            }
-        });
-
+        searchBook.setText("ENTER");
+        
+        searchBook.addActionListener(e -> searchBook());
+        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -60,10 +57,10 @@ public class Book1GUI extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel3))
                         .addGap(86, 86, 86))
-                    .addComponent(jTextField1)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField3)
-                    .addComponent(btnOpenSearchResults, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(bookNameField)
+                    .addComponent(authorField)
+                    .addComponent(publisherField)
+                    .addComponent(searchBook, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(108, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -72,17 +69,17 @@ public class Book1GUI extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bookNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(authorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(publisherField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnOpenSearchResults)
+                .addComponent(searchBook)
                 .addContainerGap(48, Short.MAX_VALUE))
         );
 
@@ -103,14 +100,54 @@ public class Book1GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnOpenSearchResultsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenSearchResultsActionPerformed
+    private void searchBook() {
+		String bookName = bookNameField.getText();
+		String author = authorField.getText();
+		String publisher = publisherField.getText();
+		
+		if(bookName.isEmpty() || author.isEmpty() || publisher.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Please fill one of the fields.");
+			
+		} else {
+			searchBook.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	                searchBookActionPerformed(evt);
+	            }
+	        });
+			
+			return;
+		}
+		
+		searchBookInDatabase(bookName, author, publisher);
+		
+		
+	
+	}
+    
+    private void searchBookInDatabase(String bookName, String author, String publisher) {
+    	
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/library",
+                    "root", "");
+
+            String sql = "SELECT * FROM Books";
+   
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error finding book in the database.");
+        }
+    	
+    }
+
+	private void searchBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBookActionPerformed
         // Opens Book1SearchResults Frame
         Book1SearchResults f2 = new Book1SearchResults();  // Creates Frame 2 Book1SearchResults
         f2.setVisible(true);
         // Hides the current JFrame Object
         this.setVisible(false);
         
-    }//GEN-LAST:event_btnOpenSearchResultsActionPerformed
+    }//GEN-LAST:event_searchBookActionPerformed
 
     /**
      * @param args the command line arguments
@@ -148,13 +185,13 @@ public class Book1GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnOpenSearchResults;
+    private javax.swing.JTextField authorField;
+    private javax.swing.JTextField bookNameField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField publisherField;
+    private javax.swing.JToggleButton searchBook;
     // End of variables declaration//GEN-END:variables
 }
