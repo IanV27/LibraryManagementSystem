@@ -1,229 +1,115 @@
-package umgc.mscs495.libmngntsys.utils;
+package umgc.mscs495.libmngntsys.test.util;
+
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
+import org.junit.Test;
 
+import umgc.mscs495.libmngntsys.utils.AppUtils;
 import umgc.mscs495.libmngntsys.vo.UserRole;
 
 /**
- * Create common APIs for the application.
+ * JUnit test for APIs defined in AppLoggingUtil.java.
  * @author jimiewang
  * @CreateDate 02/11/2024
  */
-public class AppUtils {
-	private AppLoggingUtil logging = new AppLoggingUtil();
+public class AppUtilsTest {
+	AppUtils appUtil = new AppUtils();
 	
-	public String getAppIcon() {
-        String appIconFile = System.getProperty("user.dir") 
-                + File.separatorChar + "src" + File.separatorChar + "main" + File.separatorChar 
-                + "resources" + File.separatorChar + "Images" + File.separatorChar + "lib.png";
-        return appIconFile;
-	}
-	
-	/**
-	 * Get all the user roles for login.
-	 * @return List<UserRole>
-	 */
-	public List<UserRole> getLibLoginUserRoles() {
-		List<UserRole> userRolesLst = new ArrayList<>();
-		Statement statement = null;
-	    ResultSet resultSet = null;
-	    Connection conn = null;
+	@Test
+	public void getAppIconTest() {
+		System.out.println("get application icon test");
 		try {
-//			conn = LibCommonUserDatabaseConnection.getConnection();
-			conn = createDbConnection();
-	        statement = conn.createStatement();
-		    resultSet = statement.executeQuery(
-		        "select * from AccountTypes order by TypeID");
-		    while (resultSet.next()) {
-		    	UserRole userRole = new UserRole();
-		    	userRole.setRoleID(resultSet.getInt("TypeID"));
-		    	userRole.setRoleName(resultSet.getString("TypeName").trim());
-		        userRolesLst.add(userRole);
-		    }
-		} catch(SQLException e) {
-			logging.log("Error in fetching user roles - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if(resultSet != null) {
-					resultSet.close();
-				}
-				if(statement != null) {
-					statement.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
-		}
-		return userRolesLst;
-	}
-	
-	/**
-	 * Get all the languages options for books.
-	 * @return List<String>
-	 */
-	public List<String> getBookLanguages() {
-		List<String> languagesLst = new ArrayList<>();
-		Statement statement = null;
-	    ResultSet resultSet = null;
-	    Connection conn = null;
-		try {
-//			conn = LibCommonUserDatabaseConnection.getConnection();
-			conn = createDbConnection();
-	        statement = conn.createStatement();
-		    resultSet = statement.executeQuery(
-		        "select * from Languages");
-		    while (resultSet.next()) {
-		    	languagesLst.add(resultSet.getString("Language"));
-		    }
-		} catch(SQLException e) {
-			logging.log("Error in fetching languages - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if(resultSet != null) {
-					resultSet.close();
-				}
-				if(statement != null) {
-					statement.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
-			
-		}
-		return languagesLst;
-	}
-
-	/**
-	 * Get all the book Formats options for books.
-	 * @return List<String>
-	 */
-	public List<String> getBookFormats() {
-		List<String> bookFormatsLst = new ArrayList<>();
-		Statement statement = null;
-	    ResultSet resultSet = null;
-	    Connection conn = null;
-		try {
-//			conn = LibCommonUserDatabaseConnection.getConnection();
-			conn = createDbConnection();
-	        statement = conn.createStatement();
-		    resultSet = statement.executeQuery(
-		        "select * from Formats");
-		    while (resultSet.next()) {
-		    	bookFormatsLst.add(resultSet.getString("BookFormat"));
-		    }
-		} catch(SQLException e) {
-			logging.log("Error in fetching Format - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if(resultSet != null) {
-					resultSet.close();
-				}
-				if(statement != null) {
-					statement.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
-			
-		}
-		return bookFormatsLst;
-	}
-	
-	/**
-	 * Get all the book subjects options for books.
-	 * @return List<String>
-	 */
-	public List<String> getBookSubjects() {
-		List<String> bookFormatsLst = new ArrayList<>();
-		Statement statement = null;
-	    ResultSet resultSet = null;
-	    Connection conn = null;
-		try {
-//			conn = LibCommonUserDatabaseConnection.getConnection();
-			conn = createDbConnection();
-	        statement = conn.createStatement();
-		    resultSet = statement.executeQuery(
-		        "select * from Subjects");
-		    while (resultSet.next()) {
-		    	bookFormatsLst.add(resultSet.getString("Subject"));
-		    }
-		} catch(SQLException e) {
-			logging.log("Error in fetching Book Subjects - " + e.getMessage());
-			e.printStackTrace();
-		} finally {
-			try {
-				if(resultSet != null) {
-					resultSet.close();
-				}
-				if(statement != null) {
-					statement.close();
-				}
-				if(conn != null) {
-					conn.close();
-				}
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
-			
-		}
-		return bookFormatsLst;
-	}
-	
-	private Connection createDbConnection() {
-		Connection connection = null;
-		try {
-			CredUtil credUtil = new CredUtil();
-            MysqlDataSource ds = new MysqlDataSource();
-//            ds.setUser("commonuser");
-//            ds.setPassword("pwd4Com@db");
-			String commonUsername = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "memberusrnm"), 
-					credUtil.getPropValue(credUtil.getConfigFileFullPath(), "loginkey"));
-			String commonUserpassword = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "memberusrpwd"), 
-					credUtil.getPropValue(credUtil.getConfigFileFullPath(), "loginkey"));
-            ds.setUser(commonUsername);
-            ds.setPassword(commonUserpassword);            
-            ds.setDatabaseName("librarydb");
-			ds.setURL("jdbc:mysql://localhost:3306/librarydb");
-            connection = ds.getConnection();
-//	        Statement statement;
-//	        statement = connection.createStatement();
-//            ResultSet resultSet;
-//	        resultSet = statement.executeQuery(
-//	            "select * from books");
-//            int code;
-//            String title;
-//	        while (resultSet.next()) {
-//	            code = resultSet.getInt("code");
-//	            title = resultSet.getString("title").trim();
-//	            System.out.println("Code : " + code
-//	                               + " Title : " + title);
-//	        }
-//	        resultSet.close();
-//	        statement.close();
-//	        connection.close();
+			String appIconFile = appUtil.getAppIcon();
+			assertEquals(appIconFile, System.getProperty("user.dir") + File.separatorChar + "src" + File.separatorChar + "main" + File.separatorChar 
+	                + "resources" + File.separatorChar + "Images" + File.separatorChar + "lib.png");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-        return connection;
+		System.out.println("get application icon completed");
+	}
+	
+	@Test
+	public void getLibLoginUserRolesTest() {
+		System.out.println("get library login user roles test");
+		try {
+			List<UserRole> rolesLst = appUtil.getLibLoginUserRoles();
+			assertEquals(rolesLst.size(), 4);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("get library login user roles completed");
+	}
+
+	@Test
+	public void getBookLanguagesTest() {
+		System.out.println("get book languages test");
+		try {
+			List<String> languagesLst = appUtil.getBookLanguages();
+			assertEquals(languagesLst.size(), 5);
+			assertEquals(languagesLst.get(0), "English");
+			assertEquals(languagesLst.get(1), "French");
+			assertEquals(languagesLst.get(2), "German");
+			assertEquals(languagesLst.get(3), "Italian");
+			assertEquals(languagesLst.get(4), "Spanish");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("get book languages test completed");
+	}
+
+	@Test
+	public void getBookFormatsTest() {
+		System.out.println("get book formats test");
+		try {
+			List<String> formatsLst = appUtil.getBookFormats();
+			assertEquals(formatsLst.size(), 6);
+			assertEquals(formatsLst.get(0), "Audio CD");
+			assertEquals(formatsLst.get(1), "Audiobook");
+			assertEquals(formatsLst.get(2), "Hardcover");
+			assertEquals(formatsLst.get(3), "MP3 CD");
+			assertEquals(formatsLst.get(4), "Paperback");
+			assertEquals(formatsLst.get(5), "PDF");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("get book formats test completed");
+	}
+
+	@Test
+	public void getBookSubjectsTest() {
+		System.out.println("get book subjects test");
+		try {
+			List<String> subjectsLst = appUtil.getBookSubjects();
+			assertEquals(subjectsLst.size(), 23);
+			assertEquals(subjectsLst.get(0), "Agriculture");
+			assertEquals(subjectsLst.get(1), "Anthropology");
+			assertEquals(subjectsLst.get(2), "Archaeology");
+			assertEquals(subjectsLst.get(3), "Business");
+			assertEquals(subjectsLst.get(4), "Communication");
+			assertEquals(subjectsLst.get(5), "Computing");
+			assertEquals(subjectsLst.get(6), "Economics");
+			assertEquals(subjectsLst.get(7), "Education");
+			assertEquals(subjectsLst.get(8), "Engineering");
+			assertEquals(subjectsLst.get(9), "Fine arts");
+			assertEquals(subjectsLst.get(10), "Geography");
+			assertEquals(subjectsLst.get(11), "Hisotry");
+			assertEquals(subjectsLst.get(12), "Languages");
+			assertEquals(subjectsLst.get(13), "Law");
+			assertEquals(subjectsLst.get(14), "Literature");
+			assertEquals(subjectsLst.get(15), "Mathematics");
+			assertEquals(subjectsLst.get(16), "Philosophy");
+			assertEquals(subjectsLst.get(17), "Politics");
+			assertEquals(subjectsLst.get(18), "Psychology");
+			assertEquals(subjectsLst.get(19), "Psychology");
+			assertEquals(subjectsLst.get(20), "Religion");
+			assertEquals(subjectsLst.get(21), "Science");
+			assertEquals(subjectsLst.get(22), "Sociology");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("get book subjects test completed");
 	}
 }
