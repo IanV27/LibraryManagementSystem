@@ -23,7 +23,7 @@ public class UsersAccountsOperations {
 	 * Get a user's account information from database.
 	 * @return Account
 	 */
-	public Account getUserAccount(String username) {
+	public Account getUserAccount(String username, int inputRole) {
     	Account account = null;
     	Connection conn = null;
     	PreparedStatement prepStatement = null;
@@ -31,9 +31,10 @@ public class UsersAccountsOperations {
     	
 		try {
 			conn = LibLibrarianDatabaseConnection.getConnection();
-			String query = "select * from accounts where Username = ?";
+			String query = "select * from accounts where Username = ? and AccountType = ?";
 			prepStatement = conn.prepareStatement(query);
 			prepStatement.setString(1, username);
+			prepStatement.setInt(2, inputRole);
 	        resultSet = prepStatement.executeQuery();
 	        while (resultSet.next()) {
 	        	account = new Account();
@@ -110,6 +111,48 @@ public class UsersAccountsOperations {
 		return usernameExists;
 	}
 
+	/**
+	 * Check if a user's name has existed in database.
+	 * @return Account
+	 */
+	public boolean userIDExist(String ID) {
+		boolean idExists = false;
+    	Connection conn = null;
+    	PreparedStatement prepStatement = null;
+    	ResultSet resultSet = null;
+    	
+		try {
+			conn = LibLibrarianDatabaseConnection.getConnection();
+			String query = "select * from accounts where ID = ?";
+			prepStatement = conn.prepareStatement(query);
+			prepStatement.setString(1, ID);
+	        resultSet = prepStatement.executeQuery();
+	        while (resultSet.next()) {
+	        	idExists = true;
+	        }
+		} catch(Exception e) {
+			logging.log(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if(resultSet != null) {
+					resultSet.close();
+				}
+				if(prepStatement != null) {
+					prepStatement.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(Exception ex) {
+				logging.log(ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
+		
+		return idExists;
+	}
+	
 	/**
 	 * Disable a user's account.
 	 * 
