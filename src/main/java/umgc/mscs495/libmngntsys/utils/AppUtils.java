@@ -71,7 +71,7 @@ public class AppUtils {
 	
 	/**
 	 * Get all the languages options for books.
-	 * @return List<UserRole>
+	 * @return List<String>
 	 */
 	public List<String> getBookLanguages() {
 		List<String> languagesLst = new ArrayList<>();
@@ -109,38 +109,100 @@ public class AppUtils {
 		return languagesLst;
 	}
 
+	/**
+	 * Get all the book Formats options for books.
+	 * @return List<String>
+	 */
+	public List<String> getBookFormats() {
+		List<String> bookFormatsLst = new ArrayList<>();
+		Statement statement = null;
+	    ResultSet resultSet = null;
+	    Connection conn = null;
+		try {
+//			conn = LibCommonUserDatabaseConnection.getConnection();
+			conn = createDbConnection();
+	        statement = conn.createStatement();
+		    resultSet = statement.executeQuery(
+		        "select * from Formats");
+		    while (resultSet.next()) {
+		    	bookFormatsLst.add(resultSet.getString("BookFormat"));
+		    }
+		} catch(SQLException e) {
+			logging.log("Error in fetching Format - " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if(resultSet != null) {
+					resultSet.close();
+				}
+				if(statement != null) {
+					statement.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			
+		}
+		return bookFormatsLst;
+	}
+	
+	/**
+	 * Get all the book subjects options for books.
+	 * @return List<String>
+	 */
+	public List<String> getBookSubjects() {
+		List<String> bookFormatsLst = new ArrayList<>();
+		Statement statement = null;
+	    ResultSet resultSet = null;
+	    Connection conn = null;
+		try {
+//			conn = LibCommonUserDatabaseConnection.getConnection();
+			conn = createDbConnection();
+	        statement = conn.createStatement();
+		    resultSet = statement.executeQuery(
+		        "select * from Subjects");
+		    while (resultSet.next()) {
+		    	bookFormatsLst.add(resultSet.getString("Subject"));
+		    }
+		} catch(SQLException e) {
+			logging.log("Error in fetching Book Subjects - " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if(resultSet != null) {
+					resultSet.close();
+				}
+				if(statement != null) {
+					statement.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(Exception ex) {
+				ex.printStackTrace();
+			}
+			
+		}
+		return bookFormatsLst;
+	}
+	
 	private Connection createDbConnection() {
 		Connection connection = null;
 		try {
 			CredUtil credUtil = new CredUtil();
             MysqlDataSource ds = new MysqlDataSource();
-//            ds.setUser("commonuser");
-//            ds.setPassword("pwd4Com@db");
-			String commonUsername = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "commonusrnm"), 
+			String commonUsername = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "memberusrnm"), 
 					credUtil.getPropValue(credUtil.getConfigFileFullPath(), "loginkey"));
-			String commonUserpassword = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "commonusrpwd"), 
+			String commonUserpassword = credUtil.decrypt(credUtil.getPropValue(credUtil.getConfigFileFullPath(), "memberusrpwd"), 
 					credUtil.getPropValue(credUtil.getConfigFileFullPath(), "loginkey"));
             ds.setUser(commonUsername);
             ds.setPassword(commonUserpassword);            
             ds.setDatabaseName("librarydb");
 			ds.setURL("jdbc:mysql://localhost:3306/librarydb");
             connection = ds.getConnection();
-//	        Statement statement;
-//	        statement = connection.createStatement();
-//            ResultSet resultSet;
-//	        resultSet = statement.executeQuery(
-//	            "select * from books");
-//            int code;
-//            String title;
-//	        while (resultSet.next()) {
-//	            code = resultSet.getInt("code");
-//	            title = resultSet.getString("title").trim();
-//	            System.out.println("Code : " + code
-//	                               + " Title : " + title);
-//	        }
-//	        resultSet.close();
-//	        statement.close();
-//	        connection.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
