@@ -1,5 +1,12 @@
 package umgc.mscs495.libmngntsys.screens.book;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import umgc.mscs495.libmngntsys.utils.*;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ianvi
@@ -127,10 +134,10 @@ public class Book1GUI extends javax.swing.JFrame {
     private void searchBookInDatabase(String bookName, String author, String publisher) {
     	
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/library",
-                    "root", "");
+        	  Connection connection = LibLibrarianDatabaseConnection.getConnection();
 
-            String sql = "SELECT * FROM Books";
+            String sql = "SELECT * FROM LibraryDb.books WHERE";
+            
    
             connection.close();
         } catch (SQLException e) {
