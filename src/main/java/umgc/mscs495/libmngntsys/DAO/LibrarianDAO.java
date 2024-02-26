@@ -15,6 +15,6 @@ public interface LibrarianDAO {
     public void save(Librarian librarian);
     public void update(Librarian librarian);
     public boolean delete(Librarian librarian);
-    public Librarian get(int id);
+    public Librarian get(String id);
     public List<Librarian> list();
 }
