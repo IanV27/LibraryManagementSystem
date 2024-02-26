@@ -5,7 +5,15 @@
 
 package umgc.mscs495.libmngntsys.screens.librarian;
 import umgc.mscs495.libmngntsys.vo.Librarian;
+
+import java.awt.Font;
+
+import javax.swing.JOptionPane;
+
 import umgc.mscs495.libmngntsys.DAO.LibrarianDAOImplement;
+import umgc.mscs495.libmngntsys.DAO.UsersAccountsOperations;
+import umgc.mscs495.libmngntsys.utils.JTextFieldCharLimit;
+import umgc.mscs495.libmngntsys.utils.ValidationUtil;
 
 /**
  *
@@ -41,13 +49,17 @@ public class AddForm extends javax.swing.JFrame {
         labelAddress = new javax.swing.JLabel();
         labelPosition = new javax.swing.JLabel();
         labelPassword = new javax.swing.JLabel();
+        labelID = new javax.swing.JLabel();
         labelEmail = new javax.swing.JLabel();
+        txtID = new javax.swing.JTextField();
+        txtID.setDocument(new JTextFieldCharLimit(7));
         txtFirstName = new javax.swing.JTextField();
         txtPosition = new javax.swing.JTextField();
         txtLastName = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         txtAddress = new javax.swing.JTextField();
         txtPassword = new javax.swing.JTextField();
+        
         SaveNewLibrarian = new javax.swing.JButton();
         CancelAddNewLibrarian = new javax.swing.JButton();
 
@@ -79,7 +91,7 @@ public class AddForm extends javax.swing.JFrame {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBackground(new java.awt.Color(51, 0, 204));
 
@@ -127,7 +139,11 @@ public class AddForm extends javax.swing.JFrame {
         labelPassword.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelPassword.setForeground(new java.awt.Color(255, 255, 255));
         labelPassword.setText("Password :");
-
+        
+        labelID.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        labelID.setForeground(new java.awt.Color(255, 255, 255));
+        labelID.setText("ID :");
+        
         labelEmail.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelEmail.setForeground(new java.awt.Color(255, 255, 255));
         labelEmail.setText("Email :");
@@ -137,14 +153,34 @@ public class AddForm extends javax.swing.JFrame {
                 txtPositionActionPerformed(evt);
             }
         });
-
-        SaveNewLibrarian.setBackground(new java.awt.Color(0, 0, 102));
-        SaveNewLibrarian.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        SaveNewLibrarian.setForeground(new java.awt.Color(255, 255, 255));
-        SaveNewLibrarian.setText("SAVE");
+        CancelAddNewLibrarian.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dispose();
+            }
+        });
+        
+//        SaveNewLibrarian.setBackground(new java.awt.Color(0, 0, 102));
+        SaveNewLibrarian.setBackground(java.awt.Color.BLUE);
+        SaveNewLibrarian.setFont(new java.awt.Font("Serif", Font.BOLD, 18)); // NOI18N
+//        SaveNewLibrarian.setForeground(new java.awt.Color(255, 255, 255));
+        SaveNewLibrarian.setForeground(java.awt.Color.WHITE);
+               SaveNewLibrarian.setText("SAVE");
         SaveNewLibrarian.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SaveNewLibrarianActionPerformed(evt);
+            	UsersAccountsOperations userAccountOpt = new UsersAccountsOperations();
+                String email = txtEmail.getText().trim();
+                String id = txtID.getText().trim();
+            	boolean isExistingID = userAccountOpt.userIDExist(id);
+            	boolean isExistingEmail = userAccountOpt.userNameExist(email);
+            	if(!isExistingID && !isExistingEmail) {
+            		SaveNewLibrarianActionPerformed(evt);
+            	} else {
+            		if(isExistingID) {
+            			displayErrorMessage("Input ID is in use, please use different one.");            			
+            		} else if(isExistingEmail) {
+            			displayErrorMessage("Input email is in use, please use different one.");
+            		}
+            	}
             }
         });
 
@@ -162,6 +198,7 @@ public class AddForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labelPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labelEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labelAddress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -174,6 +211,7 @@ public class AddForm extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(txtLastName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(txtPosition, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -191,6 +229,10 @@ public class AddForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelID, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -246,26 +288,39 @@ public class AddForm extends javax.swing.JFrame {
     private void SaveNewLibrarianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveNewLibrarianActionPerformed
         // TODO add your handling code here:
         ///get information from add new librarian form
+    	ValidationUtil validUtil = new ValidationUtil();
         Librarian librarian = new Librarian();
-        String firstName = txtFirstName.getText();
-        String lastName = txtLastName.getText();
-        String position = txtPosition.getText();
-        String address = txtAddress.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        
-       ///Add information to model
-        librarian.setFirstName(firstName);
-        librarian.setLastName(lastName);
-        librarian.setPosition(position);
-        librarian.setAddress(address);
-        librarian.setEmail(email);
-        librarian.setPassword(password);
-        
-        ///instantiate LibrarianDAOImplemtn
-        LibrarianDAOImplement libryImple = new LibrarianDAOImplement();
-        libryImple.save(librarian); ///calling save method to save records
-        
+        String firstName = txtFirstName.getText().trim();
+        String lastName = txtLastName.getText().trim();
+        String position = txtPosition.getText().trim();
+        String address = txtAddress.getText().trim();
+        String email = txtEmail.getText().trim();
+        String password = txtPassword.getText().trim();
+        String id = txtID.getText();
+        boolean validInput = false;
+        if(validUtil.isDigits(id) && validUtil.validateEamil(email)) {
+        	validInput = true;
+        } else {
+        	if(!validUtil.isDigits(id)) {
+        		JOptionPane.showMessageDialog(this, "Invalid ID, must be numbers.");
+        	} else if(!validUtil.validateEamil(email)) {
+        		JOptionPane.showMessageDialog(this, "Invalid email format.");
+        	}
+        }
+        if(validInput) {
+	       ///Add information to model
+	        librarian.setFirstName(firstName);
+	        librarian.setLastName(lastName);
+	        librarian.setPosition(position);
+	        librarian.setAddress(address);
+	        librarian.setEmail(email);
+	        librarian.setPassword(password);
+	        librarian.setId(id);
+	        
+	        ///instantiate LibrarianDAOImplemtn
+	        LibrarianDAOImplement libryImple = new LibrarianDAOImplement();
+	        libryImple.save(librarian); ///calling save method to save records
+        }
         
     }//GEN-LAST:event_SaveNewLibrarianActionPerformed
 
@@ -307,6 +362,10 @@ public class AddForm extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void displayErrorMessage(String message) {
+		JOptionPane.showMessageDialog(this, message);            			
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelAddNewLibrarian;
@@ -322,8 +381,10 @@ public class AddForm extends javax.swing.JFrame {
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelFirstName;
     private javax.swing.JLabel labelLastName;
+    private javax.swing.JLabel labelID;
     private javax.swing.JLabel labelPassword;
     private javax.swing.JLabel labelPosition;
+    private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFirstName;
