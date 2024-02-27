@@ -9,7 +9,7 @@ package umgc.mscs495.libmngntsys.vo;
  * @author ramuk
  */
 public class Librarian {
-    private int id; /// 6 digits
+    private String id; /// 6 digits
     private String firstName; ///Alphabets
     private String lastName; //Alpha
     private String position; //alpha
@@ -17,11 +17,11 @@ public class Librarian {
     private String email; // normal email format used as  user name
     private String password; ////alpha numeric
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
