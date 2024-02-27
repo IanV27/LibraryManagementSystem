@@ -23,6 +23,55 @@ public class UsersAccountsOperations {
 	 * Get a user's account information from database.
 	 * @return Account
 	 */
+	public Account getUserAccount(String username) {
+    	Account account = null;
+    	Connection conn = null;
+    	PreparedStatement prepStatement = null;
+    	ResultSet resultSet = null;
+    	
+		try {
+			conn = LibLibrarianDatabaseConnection.getConnection();
+			String query = "select * from accounts where Username = ?";
+			prepStatement = conn.prepareStatement(query);
+			prepStatement.setString(1, username);
+	        resultSet = prepStatement.executeQuery();
+	        while (resultSet.next()) {
+	        	account = new Account();
+	        	account.setID(null);
+	        	account.setUsername(resultSet.getString("Username")); 
+	        	//decrypt the password fetched from database.
+	        	account.setPassword(credUtil.decrypt(resultSet.getString("Password"), 
+	        			credUtil.getPropValue(credUtil.getConfigFileFullPath(), "loginkey")));
+	        	account.setAccountType(resultSet.getInt("AccountType"));
+	        	account.setActiveFlg(resultSet.getInt("ActiveFlg"));	            
+	        }
+		} catch(Exception e) {
+			logging.log(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if(resultSet != null) {
+					resultSet.close();
+				}
+				if(prepStatement != null) {
+					prepStatement.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(Exception ex) {
+				logging.log(ex.getMessage());
+				ex.printStackTrace();
+			}
+		}
+		
+		return account;
+	}
+
+	/**
+	 * Get a user's account information from database.
+	 * @return Account
+	 */
 	public Account getUserAccount(String username, int inputRole) {
     	Account account = null;
     	Connection conn = null;
