@@ -143,7 +143,13 @@ public class Book1GUI extends javax.swing.JFrame {
 			BooksDAOimplement booksImplement = new BooksDAOimplement();
 			Book searchBook = booksImplement.search(sBook);
 			if (searchBook != null) {
-				JOptionPane.showMessageDialog(null, "Successfully searched");
+//				JOptionPane.showMessageDialog(null, "Successfully searched");
+				JOptionPane.showMessageDialog(this, "Book searched successfully!\n"
+	                    + "Book Title: " + searchBook.getBookTitle() + "\n"
+	                    + "Author: " + searchBook.getAuthor() + "\n"
+	                    + "Publisher: " + searchBook.getPublisher() + "\n"
+	                    + "ISBN: " + searchBook.getISBN() + "\n"
+	                    + "PublisherYear: " + searchBook.getPublishYear());
 			}
 //			searchBook.addActionListener(new java.awt.event.ActionListener() {
 //	            public void actionPerformed(java.awt.event.ActionEvent evt) {
