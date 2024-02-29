@@ -126,6 +126,7 @@ CREATE TABLE SingleBook (
     ISBN varchar(15) NOT NULL,
     Barcode varchar(15) NOT NULL,
     Reserved int NOT NULL DEFAULT 0,
+    MemberID varchar(10),
     PurchaseDate date,
     Price double,
     Primary key (Barcode),
