@@ -39,13 +39,13 @@ public class BooksDAOimplement implements BooksDAO {
             	newbook.setFormat(rs.getString("Format"));
             	newbook.setPublishYear(rs.getInt("PublishYear"));
             } else {
-            	JOptionPane.showMessageDialog(null, "Unable to search book information.");
+            	JOptionPane.showMessageDialog(null, "Book not found.");
             	newbook = null;
             }
             
             
         } catch (HeadlessException | SQLException ex){
-            JOptionPane.showMessageDialog(null, "Unable to search book information");
+            JOptionPane.showMessageDialog(null, "Book not found");
         }
         return newbook;
 	}
@@ -57,32 +57,32 @@ public class BooksDAOimplement implements BooksDAO {
     	BookReservation reservebook = new BookReservation();
     	try{
             Connection connection = LibDBADatabaseConnection.getConnection();
-            String query = "SELECT * FROM SingleBook WHERE Barcode = ?";
+            String query = "SELECT * FROM SingleBook WHERE Barcode = ? AND MemberID = ?";
                         
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, bookreservation.getBarcode());
                         
             ResultSet rs = stmt.executeQuery();
             if (!rs.next()) {
-            	JOptionPane.showMessageDialog(null, "Wrong Barcode please enter again.");
+            	JOptionPane.showMessageDialog(null, "Invalid Barcode please enter again.");
 //            	reservebook.setBarcode(rs.getString("Barcode"));
             }
 
             String member = "SELECT * FROM Members WHERE ID = ?";
                         
             PreparedStatement rstmt = connection.prepareStatement(member);
-            rstmt.setInt(1, bookreservation.getMemberID());
+            rstmt.setString(1, bookreservation.getMemberID());
                         
             ResultSet rst = stmt.executeQuery();
             if (!rst.next()) {
-            	JOptionPane.showMessageDialog(null, "Wrong Member ID please enter again.");
+            	JOptionPane.showMessageDialog(null, "Invalid Member ID please enter again.");
 //            	reservebook.setBarcode(rs.getString("Barcode"));
             }
             if (rst.next() && rs.next()) {
             	String reserve = "INSERT INTO BookReservation(Barcode, MemberID, CreateDate, DueDate, ReturnDate, Fine) VALUES (?,?,?,?,?,?)";
                 PreparedStatement pstmnt = connection.prepareStatement(reserve);
                 pstmnt.setString(1, bookreservation.getBarcode());
-                pstmnt.setInt(2, bookreservation.getMemberID());
+                pstmnt.setString(2, bookreservation.getMemberID());
                 pstmnt.setString(3, bookreservation.getCreateDate());
                 pstmnt.setString(4, bookreservation.getDueDate());
                 pstmnt.setString(5, bookreservation.getReturnDate());
