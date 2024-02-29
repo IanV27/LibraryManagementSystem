@@ -104,9 +104,10 @@ public class Book1Reserve extends javax.swing.JFrame {
    
    private void reserveBook() {
 	   String bookID = barcodeField.getText();
-	   int memberID = parseInt(memberIDField.getText());
+	   String memberID = memberIDField.getText();
+//	   int memberID = parseInt(memberIDField.getText());
 	   
-	   if(bookID.isEmpty() || memberID.toString().isEmpty()) {
+	   if(bookID.isEmpty() || memberID.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Please fill one of the fields.");
 			
 	   } else {
