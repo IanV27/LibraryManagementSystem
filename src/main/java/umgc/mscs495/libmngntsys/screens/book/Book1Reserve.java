@@ -2,7 +2,11 @@ package umgc.mscs495.libmngntsys.screens.book;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+import umgc.mscs495.libmngntsys.DAO.BooksDAOimplement;
 import umgc.mscs495.libmngntsys.utils.*;
+import umgc.mscs495.libmngntsys.vo.BookReservation;
 
 /**
 *
@@ -28,7 +32,7 @@ public class Book1Reserve extends javax.swing.JFrame {
 
        jPanel1 = new javax.swing.JPanel();
        jLabel1 = new javax.swing.JLabel();
-       bookIDField = new javax.swing.JTextField();
+       barcodeField = new javax.swing.JTextField();
        jLabel2 = new javax.swing.JLabel();
        memberIDField = new javax.swing.JTextField();
        reserveBook = new javax.swing.JButton();
@@ -36,7 +40,7 @@ public class Book1Reserve extends javax.swing.JFrame {
        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
        setTitle("Reserve Book");
 
-       jLabel1.setText("Book ID:");
+       jLabel1.setText("Book Barcode:");
 
        jLabel2.setText("Member ID:");
 
@@ -49,11 +53,6 @@ public class Book1Reserve extends javax.swing.JFrame {
        reserveBook.setText("ENTER");
        
        reserveBook.addActionListener(e -> reserveBook()); 
-//       {
-//           public void actionPerformed(java.awt.event.ActionEvent evt) {
-//               reserveBookActionPerformed(evt);
-//           }
-//       });
 
        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
        jPanel1.setLayout(jPanel1Layout);
@@ -67,7 +66,7 @@ public class Book1Reserve extends javax.swing.JFrame {
                            .addComponent(jLabel1)
                            .addComponent(jLabel2)
                            .addComponent(memberIDField, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                           .addComponent(bookIDField)))
+                           .addComponent(barcodeField)))
                    .addGroup(jPanel1Layout.createSequentialGroup()
                        .addGap(159, 159, 159)
                        .addComponent(reserveBook)))
@@ -79,7 +78,7 @@ public class Book1Reserve extends javax.swing.JFrame {
                .addGap(46, 46, 46)
                .addComponent(jLabel1)
                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-               .addComponent(bookIDField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+               .addComponent(barcodeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                .addComponent(jLabel2)
                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -104,23 +103,30 @@ public class Book1Reserve extends javax.swing.JFrame {
    }// </editor-fold>//GEN-END:initComponents
    
    private void reserveBook() {
-	   String bookID = bookIDField.getText();
-	   String memberID = memberIDField.getText();
+	   String bookID = barcodeField.getText();
+	   int memberID = parseInt(memberIDField.getText());
 	   
-	   if(bookID.isEmpty() || memberID.isEmpty()) {
+	   if(bookID.isEmpty() || memberID.toString().isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Please fill one of the fields.");
 			
 	   } else {
-		   reserveBook.addActionListener(new java.awt.event.ActionListener() {
-	            public void actionPerformed(java.awt.event.ActionEvent evt) {
-	                reserveBookActionPerformed(evt);
-	            }
-	        });
+		   BookReservation bookreserve = new BookReservation();
+		   bookreserve.setBarcode(bookID);
+		   bookreserve.setMemberID(memberID);
+		   bookreserve.setCreateDate(LocalDateTime.now().toString());
+		   bookreserve.setDueDate(LocalDateTime.now().plusMonths(1).toString());
+		   BooksDAOimplement bookimplement = new BooksDAOimplement();
+		   bookimplement.reserve(bookreserve);
+//		   reserveBook.addActionListener(new java.awt.event.ActionListener() {
+//	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//	                reserveBookActionPerformed(evt);
+//	            }
+//	        });
 			
-			return;
+//			return;
 		}
 		
-		reserveBookInDatabase(bookID, memberID);
+//		reserveBookInDatabase(bookID, memberID);
 		
 			
 	}
@@ -185,11 +191,11 @@ public class Book1Reserve extends javax.swing.JFrame {
    }
 
    // Variables declaration - do not modify//GEN-BEGIN:variables
-   private javax.swing.JTextField memberIDField;
-   private javax.swing.JTextField bookIDField;
+   private javax.swing.JTextField barcodeField;
    private javax.swing.JLabel jLabel1;
    private javax.swing.JLabel jLabel2;
    private javax.swing.JPanel jPanel1;
+   private javax.swing.JTextField memberIDField;
    private javax.swing.JButton reserveBook;
    // End of variables declaration//GEN-END:variables
 }
