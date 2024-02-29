@@ -13,7 +13,7 @@ public class LMSStatics {
 	public static final int INACTIVE_ACCOUNT = 0;
 	public static final int MAX_TRIAL_COUNT = 2;
 	
-	private static int roleCode = 0;
+	private static int roleCode = 3;
 	private static String loginUserName;
 	
 	/**
