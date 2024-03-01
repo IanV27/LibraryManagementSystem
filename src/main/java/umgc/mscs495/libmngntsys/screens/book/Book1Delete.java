@@ -7,6 +7,7 @@ package umgc.mscs495.libmngntsys.screens.book;
 * Purpose: Delete books from Library
 * */
 
+import umgc.mscs495.libmngntsys.utils.JTextFieldCharLimit;
 import umgc.mscs495.libmngntsys.utils.LibLibrarianDatabaseConnection;
 
 import javax.swing.*;
@@ -28,11 +29,12 @@ public class Book1Delete extends JFrame {
         setAlwaysOnTop(true);
 
         isbnField = new JTextField(20);
+        isbnField.setDocument(new JTextFieldCharLimit(11));
         JButton deleteButton = new JButton("Delete");
         deleteButton.addActionListener(e -> deleteBook());
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(10, 2));
+//        panel.setLayout(new GridLayout(10, 2));
         panel.add(new JLabel("Enter ISBN:"));
         panel.add(isbnField);
         panel.add(deleteButton);
