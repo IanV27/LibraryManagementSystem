@@ -55,7 +55,7 @@ public class ViewLibrarian extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         deleteLibrarian = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel4.setBackground(new java.awt.Color(51, 0, 204));
 

@@ -6,7 +6,12 @@ package umgc.mscs495.libmngntsys.screens.librarian;
 
 import umgc.mscs495.libmngntsys.vo.Librarian;
 import umgc.mscs495.libmngntsys.DAO.LibrarianDAOImplement;
+import umgc.mscs495.libmngntsys.utils.JTextFieldCharLimit;
+import umgc.mscs495.libmngntsys.utils.ValidationUtil;
+
 import java.util.List;
+
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -20,7 +25,7 @@ public class EditLibrarian extends javax.swing.JFrame {
      */
     public EditLibrarian() {
         initComponents();
-        LoadEditPage();
+        //LoadEditPage();
     }
 
     /**
@@ -48,12 +53,14 @@ public class EditLibrarian extends javax.swing.JFrame {
         SaveEditLibrarian = new javax.swing.JButton();
         CancelEditLibrarian = new javax.swing.JButton();
         labelFirstName1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtId = new javax.swing.JTextPane();
+//        jScrollPane1 = new javax.swing.JScrollPane();
+//        txtId = new javax.swing.JTextPane();
+        txtId = new javax.swing.JTextField();
+        txtId.setDocument(new JTextFieldCharLimit(7));
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+//        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 153));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -102,13 +109,18 @@ public class EditLibrarian extends javax.swing.JFrame {
         CancelEditLibrarian.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         CancelEditLibrarian.setForeground(new java.awt.Color(255, 255, 255));
         CancelEditLibrarian.setText("Cancel");
+        CancelEditLibrarian.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dispose();
+            }
+        });
 
         labelFirstName1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelFirstName1.setForeground(new java.awt.Color(255, 255, 255));
         labelFirstName1.setText("Id : ");
 
-        txtId.setEditable(false);
-        jScrollPane1.setViewportView(txtId);
+//        txtId.setEditable(false);
+//        jScrollPane1.setViewportView(txtId);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -133,13 +145,14 @@ public class EditLibrarian extends javax.swing.JFrame {
                             .addComponent(labelFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                             .addComponent(txtFirstName, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                             .addComponent(txtLastName, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                             .addComponent(txtPosition, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                             .addComponent(txtAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                             .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
                             .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))))
+                            )))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -148,7 +161,7 @@ public class EditLibrarian extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelFirstName1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -263,10 +276,21 @@ public class EditLibrarian extends javax.swing.JFrame {
         librarian.setAddress(address);
         librarian.setEmail(email);
         librarian.setPassword(password);
-
-        ///instantiate LibrarianDAOImplemtn
-        LibrarianDAOImplement libryImple = new LibrarianDAOImplement();
-        libryImple.update(librarian); ///calling save method to save records
+        ValidationUtil valUtil = new ValidationUtil();
+        if(valUtil.isDigits(id.trim()) && id.trim().length() == 7 && !email.trim().isEmpty() && valUtil.validateEamil(email) 
+        		&& !password.trim().isEmpty()) {
+            ///instantiate LibrarianDAOImplemtn
+            LibrarianDAOImplement libryImple = new LibrarianDAOImplement();
+            libryImple.update(librarian, this); ///calling save method to save records
+        } else {
+        	if(email.trim().isEmpty() || !valUtil.validateEamil(email)) {
+        		JOptionPane.showMessageDialog(null, "Invalid email input.");
+        	} else if(password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please input password.");
+        	} else if(!valUtil.isDigits(id.trim()) || id.trim().length() != 7) {
+                JOptionPane.showMessageDialog(null, "Invalid ID input, it need to be 7 digits.");
+        	}
+        }
 
     }//GEN-LAST:event_SaveEditLibrarianActionPerformed
 
@@ -311,7 +335,7 @@ public class EditLibrarian extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
+//    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelAddress;
     private javax.swing.JLabel labelEmail;
     private javax.swing.JLabel labelFirstName;
@@ -322,7 +346,7 @@ public class EditLibrarian extends javax.swing.JFrame {
     private javax.swing.JTextField txtAddress;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtFirstName;
-    private javax.swing.JTextPane txtId;
+    private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtLastName;
     private javax.swing.JTextField txtPassword;
     private javax.swing.JTextField txtPosition;

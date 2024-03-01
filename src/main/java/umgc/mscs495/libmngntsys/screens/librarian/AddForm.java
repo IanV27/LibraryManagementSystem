@@ -319,7 +319,7 @@ public class AddForm extends javax.swing.JFrame {
 	        
 	        ///instantiate LibrarianDAOImplemtn
 	        LibrarianDAOImplement libryImple = new LibrarianDAOImplement();
-	        libryImple.save(librarian); ///calling save method to save records
+	        libryImple.save(librarian, this); ///calling save method to save records
         }
         
     }//GEN-LAST:event_SaveNewLibrarianActionPerformed
