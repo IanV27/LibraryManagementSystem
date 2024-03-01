@@ -5,15 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import umgc.mscs495.libmngntsys.utils.*;
 /**
  * A utility class for interacting with a database and retrieving user data.
  *
  * @author tyra
  */
 public class DBUtility {
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "1369805742";
     private static final String URL = "jdbc:mysql://localhost:3306/LibraryDB";
    
 
@@ -24,8 +22,9 @@ public class DBUtility {
      */
     private static Connection getConnection() {
         try {
-            return DriverManager.getConnection(URL, DB_USER, DB_PASSWORD);
-        } catch (SQLException e) {
+            return  LibDBADatabaseConnection.getConnection () ;
+     
+        } catch (Exception e) {
             throw new RuntimeException("Error connecting to the database", e);
         }
     }
