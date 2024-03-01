@@ -273,7 +273,7 @@ public class MemberHomeScreen {
 
 		         //Deleting librarian screen display
 		         if(e.getActionCommand().equals("DeleteLibrarians")) {
-		        	 LibraryHomePage libHomeScren = new LibraryHomePage();
+		        	 ViewLibrarian libHomeScren = new ViewLibrarian();
 		        	 libHomeScren.setLocationRelativeTo(null);
 		        	 libHomeScren.setVisible(true);
 		         }
@@ -296,6 +296,7 @@ public class MemberHomeScreen {
 		         if(e.getActionCommand().equals("DeleteBooks")) {
 		        	 DeleteBookMenu delBookScren = new DeleteBookMenu();
 		        	 delBookScren.setLocationRelativeTo(null);
+		        	 delBookScren.setAlwaysOnTop(true);
 		        	 delBookScren.setVisible(true);
 		         }
 
