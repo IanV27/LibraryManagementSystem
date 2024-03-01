@@ -35,6 +35,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import umgc.mscs495.libmngntsys.screens.book.AddBooksMenu;
+import umgc.mscs495.libmngntsys.screens.book.Book1Delete;
 import umgc.mscs495.libmngntsys.screens.book.Book1GUI;
 import umgc.mscs495.libmngntsys.screens.book.Book1Reserve;
 import umgc.mscs495.libmngntsys.screens.book.DeleteBookMenu;
@@ -294,7 +295,7 @@ public class MemberHomeScreen {
 		         
 		         //Deleting book screen display
 		         if(e.getActionCommand().equals("DeleteBooks")) {
-		        	 DeleteBookMenu delBookScren = new DeleteBookMenu();
+		        	 Book1Delete delBookScren = new Book1Delete();
 		        	 delBookScren.setLocationRelativeTo(null);
 		        	 delBookScren.setAlwaysOnTop(true);
 		        	 delBookScren.setVisible(true);
