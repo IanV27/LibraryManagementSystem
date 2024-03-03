@@ -1,12 +1,10 @@
 package umgc.mscs495.libmngntsys.screens;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -17,31 +15,20 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
-import umgc.mscs495.libmngntsys.screens.book.AddBooksMenu;
+import umgc.mscs495.libmngntsys.screens.book.Book1Add;
 import umgc.mscs495.libmngntsys.screens.book.Book1Delete;
 import umgc.mscs495.libmngntsys.screens.book.Book1GUI;
 import umgc.mscs495.libmngntsys.screens.book.Book1Reserve;
-import umgc.mscs495.libmngntsys.screens.book.DeleteBookMenu;
 import umgc.mscs495.libmngntsys.screens.librarian.AddForm;
 import umgc.mscs495.libmngntsys.screens.librarian.EditLibrarian;
-import umgc.mscs495.libmngntsys.screens.librarian.LibraryHomePage;
 import umgc.mscs495.libmngntsys.screens.librarian.ViewLibrarian;
 import umgc.mscs495.libmngntsys.screens.member.AddUserPage;
 import umgc.mscs495.libmngntsys.screens.member.DeleteUserPage;
@@ -247,6 +234,9 @@ public class MemberHomeScreen {
 		         //Adding member screen display
 		         if(e.getActionCommand().equals("NewMembers")) {
 		        	 AddUserPage addMemScrn = new AddUserPage();
+//		        	 AddMemberScreen addMemScrn = new AddMemberScreen();
+//		        	 DisplayMemberScreens displayMemScrn = new DisplayMemberScreens();
+//		        	 displayMemScrn.displayAddMemberWindow();
 		        	 addMemScrn.setLocationRelativeTo(null);
 		        	 addMemScrn.setVisible(true);
 		         }
@@ -288,7 +278,7 @@ public class MemberHomeScreen {
 
 		         //Adding book screen display
 		         if(e.getActionCommand().equals("AddBooks")) {
-		        	 AddBooksMenu addBookScren = new AddBooksMenu();
+		        	 Book1Add addBookScren = new Book1Add();
 		        	 addBookScren.setLocationRelativeTo(null);
 		        	 addBookScren.setVisible(true);
 		         }
@@ -318,6 +308,7 @@ public class MemberHomeScreen {
 		         //Log out
 		         if(e.getActionCommand().equals("Logout")) {
 		        	 mainFrame.dispose();
+		        	 new NonmemberHomeScreen(mainFrame);
 		         }
 		      }    
 		   }

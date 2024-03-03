@@ -143,6 +143,7 @@ public class LoginScreen extends JPanel {
 							//validate the input password
 							if(loginAccount.getPassword().equals(password)) {
 								logging.log(username + " logged in successfully!");
+								LMSStatics.setRoleCode(roleCode);
 								parentFrame.dispose();
 								MemberHomeScreen memberScreen = new MemberHomeScreen();
 								memberScreen.showMenuScreen();
