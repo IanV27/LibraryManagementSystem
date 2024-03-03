@@ -21,7 +21,6 @@ CREATE TABLE AccountTypes(
 INSERT INTO AccountTypes(TypeID, TypeName) values(3, 'DBA');
 INSERT INTO AccountTypes(TypeID, TypeName) values(2, 'Librarian');
 INSERT INTO AccountTypes(TypeID, TypeName) values(1, 'Member');
-INSERT INTO AccountTypes(TypeID, TypeName) values(0, 'Nonmember');
 
 CREATE TABLE Languages(
     Language varchar(25) NOT NULL,
@@ -37,7 +36,7 @@ CREATE TABLE Subjects(
     Subject varchar(25) NOT NULL,
     INDEX FK_SubjectsSubject(Subject)
 );
-INSERT INTO Subjects(Subject) values('Hisotry');
+INSERT INTO Subjects(Subject) values('History');
 INSERT INTO Subjects(Subject) values('Literature');
 INSERT INTO Subjects(Subject) values('Science');
 INSERT INTO Subjects(Subject) values('Archaeology');
@@ -126,7 +125,6 @@ CREATE TABLE SingleBook (
     ISBN varchar(15) NOT NULL,
     Barcode varchar(15) NOT NULL,
     Reserved int NOT NULL DEFAULT 0,
-    MemberID varchar(10),
     PurchaseDate date,
     Price double,
     Primary key (Barcode),
@@ -137,6 +135,7 @@ Alter table SingleBook ADD CONSTRAINT FK_BooksISBN FOREIGN KEY (ISBN) REFERENCES
 CREATE TABLE BookReservation (
     Barcode varchar(15) NOT NULL,
     CreateDate date NOT NULL,
+    MemberID varchar(10) NOT NULL,
     DueDate date NOT NULL,
     ReturnDate date,
     Fine double
@@ -183,10 +182,70 @@ GRANT UPDATE ON librarydb.* TO 'user_superv'@'localhost';
 GRANT INSERT ON librarydb.* TO 'user_superv'@'localhost';
 GRANT DELETE ON librarydb.* TO 'user_superv'@'localhost';
 
---test accounts
-insert into accounts(id, username, password, accounttype, activeFlg) values('9999999', 'dba', 'K4q1oichwc4btzrxjXb9Qw==', 3, 1);
-insert into accounts(id, username, password, accounttype, activeFlg) values('8888888', 'librarian', 'd2OliVZZ4tT7gH3elFU9iQ==', 2, 1);
-insert into accounts(id, username, password, accounttype, activeFlg) values('7777777', 'member', '9HXMtTydgl4mk1mZbJd7Jg==', 1, 1);
+--test accounts / test data
+--password:pwd4Sup@db
+--DBA role
+insert into accounts(id, username, password, accounttype, activeFlg) values('9999999', 'dba@test.com', 'K4q1oichwc4btzrxjXb9Qw==', 3, 1);
+
+--password:pwd4Lib@db
+--Librarian role
+insert into accounts(id, username, password, accounttype, activeFlg) values('8888888', 'librarian@test.com', 'd2OliVZZ4tT7gH3elFU9iQ==', 2, 1);
+INSERT INTO Librarians(ID, Email, FirstName, LastName, Position, Address) values('8888888', 'librarian@test.com', 'librarian', 'librarian', 'book keeper', 'librarian address');
+--password:pwd4Mem@db
+--Member role
+insert into accounts(id, username, password, accounttype, activeFlg) values('7777777', 'member@test.com', '9HXMtTydgl4mk1mZbJd7Jg==', 1, 1);
+insert into members(ID, Email, Firstname, Lastname, Address) values('7777777', 'member@test.com', 'member', 'member', 'member address');
+
+--test data
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('All the Light We Cannot See - novel', '11111111111', 'Anthony Doerr, Zach Appelman', 'Simon & Schuster Audio', 'Literature', 'English', 'Paperback', 2023);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('Lessons in Chemistry', '22222222222', ' Bonnie Garmus, Miranda Raison', 'Random House Audio', 'Literature', 'English', 'Paperback', 2020);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('In Five Years - novel', '33333333333', 'Rebecca Serle', 'Penguin Publishing Group', 'Literature', 'English', 'Paperback', 2018);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('The Paper Palace - novel', '44444444444', ' Miranda Cowley Heller', 'Atria Books', 'Literature', 'English', 'Paperback', 2021);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('Wish You Were Here - novel', '55555555555', 'Jodi Picoult', 'Simon & Schuster Audio', 'Literature', 'English', 'Paperback', 2018);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('On Mystic Lake', '66666666666', 'Kristin Hannah', 'Simon & Schuster Audio', 'Literature', 'French', 'Paperback', 2017);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('Summer Island - novel', '77777777777', 'Kristin Hannah', 'Simon & Schuster Audio', 'Literature', 'English', 'Paperback', 2018);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('The Giver of Stars - novel', '88888888888', 'Jojo Moyes, Julia Whelan', 'Simon & Schuster Audio', 'Literature', 'French', 'Paperback', 2016);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('The Love of My Life', '99999999999', 'Rosie Walsh', 'Simon & Schuster Audio', 'Literature', 'English', 'Paperback', 2015);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('The House in the Pines - novel', '10000000000', 'Ana Reyes', 'Simon & Schuster Audio', 'Literature', 'English', 'Paperback', 2014);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('Historic Photos of Outlaws of the Old West - history', '22222222200', 'Larry Johnson', 'Simon & Schuster Audio', 'History', 'English', 'Paperback', 2000);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('The World of Doc Holliday  Victoria Wilcox - history', '22222222201', 'Larry Johnson', 'Simon & Schuster Audio', 'History', 'English', 'Paperback', 1990);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('Historic Shipwrecks and Rescues on Lake Michigan - history', '22222222202',  'Michael Passwater', 'Simon & Schuster Audio', 'History', 'English', 'Paperback', 1992);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('The Trump Indictments - history', '22222222203',  'Melissa Murray and Andrew Weissmann', 'Simon & Schuster Audio', 'History', 'English', 'Paperback', 1995);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('Conquistador Voices - history', '22222222205', 'Steve Gross and Susan Daley', 'Simon & Schuster Audio', 'History', 'English', 'Paperback', 1995);
+
+INSERT INTO books (Title, ISBN, Author, Publisher, Subject, Language, format, PublishYear) VALUES ('Historic Battles from World War II for Kids - history', '22222222206', 'Carla Mooney', 'Simon & Schuster Audio', 'History', 'English', 'Paperback', 1995);
+
+
+INSERT INTO singlebook(isbn, barcode,reserved) values('11111111111', '1111111111', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('22222222222', '2222222222', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('33333333333', '3333333333', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('44444444444', '4444444444', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('55555555555', '5555555555', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('66666666666', '6666666666', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('77777777777', '7777777777', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('88888888888', '8888888888', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('99999999999', '9999999999', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('10000000000', '1000000000', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('22222222200', '2222222200', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('22222222201', '2222222201', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('22222222202', '2222222202', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('22222222203', '2222222203', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('22222222205', '2222222205', 0);
+INSERT INTO singlebook(isbn, barcode,reserved) values('22222222206', '2222222206', 0);
 
 
 
