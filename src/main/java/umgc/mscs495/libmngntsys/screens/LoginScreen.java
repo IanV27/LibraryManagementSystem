@@ -134,7 +134,7 @@ public class LoginScreen extends JPanel {
 				} else {
 					username = username.trim();
 					//authenticate input user's account
-					Account loginAccount = usrAccntOpts.getUserAccount(username);
+					Account loginAccount = usrAccntOpts.getUserAccount(username, roleCode);
 					if(loginAccount != null) {
 						//check if the account has been locked
 						if(loginAccount.getActiveFlg() == LMSStatics.INACTIVE_ACCOUNT) {
