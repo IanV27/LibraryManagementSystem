@@ -4,6 +4,7 @@
  */
 
 package umgc.mscs495.libmngntsys.DAO;
+import java.awt.Component;
 import java.util.List;
 import umgc.mscs495.libmngntsys.vo.Librarian;
 
@@ -12,8 +13,8 @@ import umgc.mscs495.libmngntsys.vo.Librarian;
  * @author ramuk
  */
 public interface LibrarianDAO {
-    public void save(Librarian librarian);
-    public void update(Librarian librarian);
+    public void save(Librarian librarian, Component parenComp);
+    public void update(Librarian librarian, Component parenComp);
     public boolean delete(Librarian librarian);
     public Librarian get(String id);
     public List<Librarian> list();
