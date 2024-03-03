@@ -308,7 +308,6 @@ public class MemberHomeScreen {
 		         //Log out
 		         if(e.getActionCommand().equals("Logout")) {
 		        	 mainFrame.dispose();
-		        	 new NonmemberHomeScreen(mainFrame);
 		         }
 		      }    
 		   }
