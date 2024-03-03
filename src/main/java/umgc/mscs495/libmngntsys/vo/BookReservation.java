@@ -12,6 +12,7 @@ public class BookReservation {
 	private String dueDate; //yyyy-mm-dd
 	private String returnDate;  //yyyy-mm-dd
 	private double fine;
+	private String memberID;
 
 	/**
 	 * @return the barcode
@@ -72,5 +73,12 @@ public class BookReservation {
 	 */
 	public void setFine(double fine) {
 		this.fine = fine;
+	}
+
+	public String getMemberID() {
+		return memberID;
+	}
+	public void setMemberID(String memberID) {
+		this.memberID = memberID;
 	}
 }
