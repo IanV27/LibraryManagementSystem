@@ -21,7 +21,8 @@ public class EditUserPage extends JFrame {
 
             User userFromDb;
             try {
-                userFromDb = DBUtility.getUserByEmail(userEmail);
+            	DBUtility dbUtil = new DBUtility();
+                userFromDb = dbUtil.getUserByEmail(userEmail);
             } catch (DatabaseException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(),
                         "Database error", JOptionPane.ERROR_MESSAGE);
@@ -90,11 +91,12 @@ public class EditUserPage extends JFrame {
 
         // Update user in DB
         try {
-            User userFromDb = DBUtility.getUserByEmail(userEmail);
+        	DBUtility dbUtil = new DBUtility();
+            User userFromDb = dbUtil.getUserByEmail(userEmail);
             userFromDb.setAddress(address);
             userFromDb.setEmail(email);
             userFromDb.setPassword(password);
-            DBUtility.updateUser(userFromDb);
+            dbUtil.updateUser(userFromDb);
 
             // Display user information
             JOptionPane.showMessageDialog(this, "User edited successfully!\n"
@@ -129,11 +131,12 @@ public class EditUserPage extends JFrame {
         int result = JOptionPane.showConfirmDialog(this, panel, "login", JOptionPane.OK_CANCEL_OPTION);
         // if the user pressed OK, handles login
         if (result == 0) {
-            userEmail = username.getText();
-            String userPassword = String.valueOf(password.getPassword());
+            userEmail = username.getText().trim();
+            String userPassword = String.valueOf(password.getPassword()).trim();
 
             try {
-                User userByEmail = DBUtility.getUserByEmail(userEmail);
+            	DBUtility dbUtil = new DBUtility();
+                User userByEmail = dbUtil.getUserByEmail(userEmail);
                 if (userByEmail == null || !userByEmail.getPassword().equals(userPassword)) {
                     throw new RuntimeException("User or password is incorrect.");
                 }

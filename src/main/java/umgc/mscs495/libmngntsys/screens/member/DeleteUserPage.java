@@ -43,12 +43,13 @@ public class DeleteUserPage extends JFrame {
         String userPassword = new String(passwordField.getPassword());
 
         try {
-            User userByEmail = DBUtility.getUserByEmail(userEmail);
+        	DBUtility dbUtil = new DBUtility();
+            User userByEmail = dbUtil.getUserByEmail(userEmail);
             if (userByEmail == null || !userByEmail.getPassword().equals(userPassword)) {
                 throw new RuntimeException("User or password is incorrect.");
             }
 
-            DBUtility.deleteUserByEmail(userEmail);
+            dbUtil.deleteUserByEmail(userEmail);
             JOptionPane.showMessageDialog(this, "User account deleted successfully!");
             dispose(); // Close the Delete User page
         } catch (Exception e) {

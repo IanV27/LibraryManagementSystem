@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.Random;
 import javax.swing.*;
 
+import umgc.mscs495.libmngntsys.utils.JTextFieldCharLimit;
+
 /**
  * @author tyra
  */
@@ -24,23 +26,23 @@ public class AddUserPage extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(6, 2));
 
-        panel.add(new JLabel("First Name:"));
+        panel.add(new JLabel("   First Name:"));
         firstNameField = new JTextField();
         panel.add(firstNameField);
 
-        panel.add(new JLabel("Last Name:"));
+        panel.add(new JLabel("   Last Name:"));
         lastNameField = new JTextField();
         panel.add(lastNameField);
 
-        panel.add(new JLabel("Address:"));
+        panel.add(new JLabel("   Address:"));
         addressField = new JTextField();
         panel.add(addressField);
 
-        panel.add(new JLabel("Email Address:"));
+        panel.add(new JLabel("   Email Address:"));
         emailField = new JTextField();
         panel.add(emailField);
 
-        panel.add(new JLabel("Password:"));
+        panel.add(new JLabel("   Password:"));
         passwordField = new JPasswordField();
         panel.add(passwordField);
 
@@ -67,11 +69,11 @@ public class AddUserPage extends JFrame {
     }
 
     private void addUser() {
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-        String address = addressField.getText();
-        String email = emailField.getText();
-        String password = new String(passwordField.getPassword());
+        String firstName = firstNameField.getText().trim();
+        String lastName = lastNameField.getText().trim();
+        String address = addressField.getText().trim();
+        String email = emailField.getText().trim();
+        String password = (new String(passwordField.getPassword())).trim();
 
         // Perform input validation
         try {
@@ -88,7 +90,8 @@ public class AddUserPage extends JFrame {
         // Store the user to the DB
         User user = new User(libraryNumber, firstName, lastName, address, email, password);
         try {
-            DBUtility.addUser(user);
+            DBUtility dbUtil = new DBUtility();
+            dbUtil.addUser(user);
             // Display user information
             JOptionPane.showMessageDialog(this, "User added successfully!\n"
                     + "First Name: " + firstName + "\n"
@@ -106,7 +109,7 @@ public class AddUserPage extends JFrame {
         // Generate a random 8-digit library number
         Random random = new Random();
         StringBuilder libraryNumber = new StringBuilder();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 7; i++) {
             libraryNumber.append(random.nextInt(10)); // Append random digit
         }
         return libraryNumber.toString();

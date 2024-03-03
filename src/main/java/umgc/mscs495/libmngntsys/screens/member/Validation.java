@@ -1,7 +1,11 @@
 package umgc.mscs495.libmngntsys.screens.member;
+
+import umgc.mscs495.libmngntsys.utils.ValidationUtil;
+
 public class Validation {
     public static void validateInput(String firstName, String lastName, String address,
                                      String email, String password) throws UserInputValidationException {
+    	ValidationUtil valUtil = new ValidationUtil();
         // Validate First Name: Alphabetic characters only
         if (!firstName.matches("[a-zA-Z]+")) {
             throw new UserInputValidationException("Invalid first name. Please use alphabetic characters only.");
@@ -19,7 +23,7 @@ public class Validation {
         }
 
         // Validate Email Address: Must contain '@' symbol
-        if (!email.contains("@")) {
+        if (!valUtil.validateEamil(email)) {
             throw new UserInputValidationException("Invalid email address. Please include '@' symbol.");
         }
 

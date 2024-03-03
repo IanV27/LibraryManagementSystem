@@ -14,15 +14,19 @@ public class ViewUserPage extends JFrame {
     public ViewUserPage() {
         if (login()) {
 
-            User userFromDb;
+            User userFromDb = null;
+            boolean isValid = false;
             try {
-                userFromDb = DBUtility.getUserByEmail(userEmail);
+            	DBUtility dbUtil = new DBUtility();
+                userFromDb = dbUtil.getUserByEmail(userEmail);
+                if(userFromDb != null && !userFromDb.getEmail().isEmpty()) {
+                	isValid = true;
+                }
             } catch (DatabaseException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(),
                         "Database error", JOptionPane.ERROR_MESSAGE);
-                return;
             }
-
+            if(isValid) {
             setTitle("View User");
             setSize(400, 300);
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -59,6 +63,7 @@ public class ViewUserPage extends JFrame {
 
             add(panel);
             setVisible(true);
+            }
         }
     }
 
@@ -81,11 +86,12 @@ public class ViewUserPage extends JFrame {
                 "login", JOptionPane.OK_CANCEL_OPTION);
         // if the user pressed OK, handles login
         if (result == 0) {
-            userEmail = username.getText();
-            String userPassword = String.valueOf(password.getPassword());
+            userEmail = username.getText().trim();
+            String userPassword = String.valueOf(password.getPassword()).trim();
 
             try {
-                User userByEmail = DBUtility.getUserByEmail(userEmail);
+            	DBUtility dbUtil = new DBUtility();
+                User userByEmail = dbUtil.getUserByEmail(userEmail);
                 if (userByEmail == null || !userByEmail.getPassword().equals(userPassword)) {
                     throw new RuntimeException("User or password is incorrect.");
                 }
