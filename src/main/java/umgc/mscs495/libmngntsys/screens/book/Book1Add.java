@@ -316,6 +316,6 @@ public class Book1Add extends JFrame {
     }
 
     public static void main(String[] args) {
-        new AddBooksMenu().setVisible(true);
+        new Book1Delete().setVisible(true);
     }
 }
